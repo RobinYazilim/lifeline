@@ -106,8 +106,13 @@ public class EnemyManager : MonoBehaviour
                 enemy.t += dt;
                 if (enemy.t >= enemy.attackCooldown)
                 {
+                        Debug.Log("Attacking the home base thing");
                     enemy.t -= enemy.attackCooldown;
-                    Debug.Log("im mean and im attacking!!");
+                    bool dead = HomeManager.inst.home.takeDamage(enemy, enemy.damage);
+                    if (dead)
+                    {
+                        Debug.Log("GGEZ ur dead");
+                    }
                 }
             }
         }

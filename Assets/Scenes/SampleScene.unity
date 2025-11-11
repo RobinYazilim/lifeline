@@ -778,6 +778,8 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 3986690887656586241, guid: 2eb32578b256337489f86f0940695ca9, type: 3}
   turretPrefabs:
+  - {fileID: 3986690887656586241, guid: b22b738ea5a6ba644bf4cd63eb638f93, type: 3}
+  homePrefabs:
   - {fileID: 3986690887656586241, guid: e02f8e83bafe2cc45abc5f4c8ed51e8a, type: 3}
 --- !u!4 &1109819838
 Transform:

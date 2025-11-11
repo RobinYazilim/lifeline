@@ -65,7 +65,6 @@ public class TurretManager : MonoBehaviour
                 foreach (var enemy in EnemyManager.inst.enemies)
                 {
                     float dist = Vector3.Distance(turret.physical.transform.position, enemy.physical.transform.position);
-                    Debug.Log(dist);
                     if (dist <= turret.reach)
                     {
                         turret.target = enemy;
@@ -80,6 +79,13 @@ public class TurretManager : MonoBehaviour
                 if (turret.target == null)
                 {
                     turret.state = TurretState.Idle;
+                    continue;
+                }
+                float dist = Vector3.Distance(turret.physical.transform.position, turret.target.physical.transform.position);
+                if (dist > turret.reach)
+                {
+                    turret.state = TurretState.Idle;
+                        Debug.Log("Enemy out of bounds..");
                     continue;
                 }
 
