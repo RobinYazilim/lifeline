@@ -23,7 +23,10 @@ public class EnemyHandler : MonoBehaviour
 
     void Update()
     {
-        if (path == null ||)
+        if (path == null || path.Length == 0)
+        {
+            return;
+        }
         float dt = Time.deltaTime;
         
 
