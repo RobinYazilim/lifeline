@@ -6,7 +6,16 @@ public enum EnemyState
 {
     Walking,
     Attacking,
-    Stunned 
+    Stunned
+}
+public enum EnemyType
+{
+    Basic,
+    Fast,
+    Tank,
+    Debuff,
+    Kamikaze,
+    Boss,
 }
 public class Enemy
 {
@@ -20,8 +29,9 @@ public class Enemy
     public int currentIndex = 1;
 
     public EnemyState state = EnemyState.Walking;
+    public EnemyType type;
 
-    public Enemy(float speed, int id, float health, float damage, float attackCooldown, GameObject physical)
+    public Enemy(float speed, int id, float health, float damage, float attackCooldown, EnemyType type, GameObject physical)
     {
         this.speed = speed;
         this.id = id;
@@ -29,6 +39,7 @@ public class Enemy
         this.damage = damage;
         this.physical = physical;
         this.attackCooldown = attackCooldown;
+        this.type = type;
     }
 
     public bool takeDamage(float dmgTaken)
@@ -63,11 +74,40 @@ public class EnemyManager : MonoBehaviour
         this.path = path;
     }
 
-    public void spawnEnemy(float speed, float health, float damage, float attackCooldown, GameObject physical)
+    public void spawnEnemy(float speed, float health, float damage, float attackCooldown, EnemyType type, GameObject physical)
     {
+        switch(type)
+        {
+            case EnemyType.Fast:
+                speed *= 1.5f;
+                health *= 0.75f;
+                break;
+            case EnemyType.Tank:
+                speed *= 0.75f;
+                health *= 1.5f;
+                break;
+            case EnemyType.Kamikaze:
+                damage *= 2f;
+                health *= 0.5f;
+                speed *= 1.5f;
+                break;
+            case EnemyType.Boss:
+                speed *= 0.5f;
+                health *= 3.5f;
+                damage *= 2f;
+                break;
+            case EnemyType.Debuff:
+                // sonra yaparız
+                break;
+
+            case EnemyType.Basic:
+            default:
+                break;
+        }
+        
         GameObject newPhysical = Object.Instantiate(physical);
         newPhysical.transform.position = new Vector3(1000f, 1000f, 1000f);
-        Enemy newEnemy = new Enemy(speed, enemies.Count, health, damage, attackCooldown, newPhysical);
+        Enemy newEnemy = new Enemy(speed, enemies.Count, health, damage, attackCooldown, type, newPhysical);
 
         enemies.Add(newEnemy);
     }

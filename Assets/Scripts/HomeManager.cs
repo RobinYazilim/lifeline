@@ -71,6 +71,11 @@ public class HomeManager : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
+        if (home == null) //home oluşmadan attack etmeyi deniyordu error veriyordu bu yüzden de
+        {
+            return;
+        }
+        
         if (home.state == HomeState.Attacking)
         {
             if (home.target == null)
@@ -84,12 +89,17 @@ public class HomeManager : MonoBehaviour
             {
                 Debug.Log("HOME ATTACKED!!!");
                 home.t -= home.attackCooldown;
-                bool dead = home.target.takeDamage(home.damage);
-                if (dead)
+
+
+                if (home.target != null)  //Bu defa da home target olmadan attack etmeyi deniyordu (mal mı biraz neyse)
                 {
-                    home.state = HomeState.Idle;
-                    home.target = null;
-                    return;
+                    bool dead = home.target.takeDamage(home.damage);
+                    if (dead)
+                    {
+                        home.state = HomeState.Idle;
+                        home.target = null;
+                        return;
+                    }
                 }
             }
         }

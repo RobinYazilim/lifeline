@@ -8,6 +8,17 @@ public enum TurretState
     Stunned,
     Idle,
 }
+
+public enum TurretType
+{
+    Basic,
+    AOE,
+    Stun,
+    AllInOne,
+    Reverse,
+    Buff,
+    Debuff
+}
 public class Turret
 {
     public int id;
@@ -16,11 +27,13 @@ public class Turret
     public float reach = 3f;
     public GameObject physical;
     public TurretState state;
+    public TurretType type;
     public float t = 0;
     public Enemy target;
 
 
-    public Turret(int id, float damage, float attackCooldown, float reach, GameObject physical)
+
+    public Turret(int id, float damage, float attackCooldown, float reach, TurretType type, GameObject physical)
     {
         this.id = id;
         this.damage = damage;
@@ -28,6 +41,8 @@ public class Turret
         this.attackCooldown = attackCooldown;
         this.reach = reach;
         this.state = TurretState.Idle;
+        this.type = type;
+
     }
 }
 
@@ -45,11 +60,29 @@ public class TurretManager : MonoBehaviour
         turrets = new List<Turret>();
     }
 
-    public void spawnTurret(Vector3 position, float damage, float attackCooldown, float reach, GameObject physical)
+    public void spawnTurret(Vector3 position, float damage, float attackCooldown, float reach,TurretType type, GameObject physical)
     {
+        switch (type) //şimdilik boş sonra tamamlayacağım
+        {
+            case TurretType.Basic:
+                default:
+                break;
+            case TurretType.AOE: 
+                break;
+            case TurretType.Stun:
+                break;
+            case TurretType.AllInOne:  
+                break;
+            case TurretType.Reverse: 
+                break;
+            case TurretType.Buff:
+                break;
+            case TurretType.Debuff:
+                break;
+        }
         GameObject newPhysical = Object.Instantiate(physical);
         newPhysical.transform.position = position;
-        Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, newPhysical);
+        Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, type, newPhysical);
 
         turrets.Add(newTurret);
     }
