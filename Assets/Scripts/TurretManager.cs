@@ -30,6 +30,8 @@ public class Turret
     public TurretType type;
     public float t = 0;
     public Enemy target;
+    public Projectile projectile;
+
 
 
 
@@ -125,6 +127,8 @@ public class TurretManager : MonoBehaviour
                 turret.t += dt;
                 if (turret.t >= turret.attackCooldown)
                 {
+                    ProjectileManager.inst.SpawnProjectile(11f, turret.physical.transform.position, 15f, turret.target.physical.transform);
+        
                     Debug.Log("ATTACKED!!!");
                     turret.t -= turret.attackCooldown;
                     bool dead = turret.target.takeDamage(turret.damage);

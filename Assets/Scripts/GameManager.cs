@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
         while (EnemyManager.inst == null || TurretManager.inst == null)
             yield return null;
 
-        TurretManager.inst.spawnTurret(new Vector3(-0.7f, 1.23f, 0f), 5f, 0.3f, 2f,TurretType.Basic, turretPrefabs[0]);
+        TurretManager.inst.spawnTurret(new Vector3(-0.7f, 1.23f, 0f), 5f, 0.3f, 2f, TurretType.Basic, turretPrefabs[0]);
+        
         HomeManager.inst.spawnHome(new Vector3(-6f, -1.54f, 0f), 500f, 5f, 0.5f, homePrefabs[0]);
 
         for (int i = 1; i <= 3; i++)
