@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Rendering;
 public enum TurretState
 {
     Attacking,
@@ -31,11 +30,13 @@ public class Turret
     public float t = 0;
     public Enemy target;
     public Projectile projectile;
+    public Action<Enemy> onHit; // bunu kullanarak ozel seyleri yapariz MUHTEMELEN
+    // stun fln seylerini iste
 
 
 
 
-    public Turret(int id, float damage, float attackCooldown, float reach, TurretType type, GameObject physical)
+    public Turret(int id, float damage, float attackCooldown, float reach, TurretType type, GameObject physical, Action<Enemy> onHit = null)
     {
         this.id = id;
         this.damage = damage;
@@ -44,6 +45,7 @@ public class Turret
         this.reach = reach;
         this.state = TurretState.Idle;
         this.type = type;
+        this.onHit = onHit;
 
     }
 }
@@ -53,40 +55,159 @@ public class TurretManager : MonoBehaviour
     public static TurretManager inst;
 
     private List<Turret> turrets;
+    private List<Turret> turretsToRemove;
     
-    void Start()
+    void Awake()
     {
         if (inst == null) inst = this;
         else Destroy(gameObject);
 
         turrets = new List<Turret>();
+        turretsToRemove = new List<Turret>();
     }
 
-    public void spawnTurret(Vector3 position, float damage, float attackCooldown, float reach,TurretType type, GameObject physical)
+    private System.Collections.IEnumerator RemoveStun(Enemy target, float delay)
     {
-        switch (type) //şimdilik boş sonra tamamlayacağım
+        yield return new WaitForSeconds(delay);
+        if (target == null) yield break;
+        target.stunned -= 1;
+    }
+    private System.Collections.IEnumerator RemoveDebuff(Enemy target, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (target == null) yield break;
+        target.debuffed -= 1;
+    }
+
+    private void setOnHit(Turret turret)
+    {
+        switch (turret.type)
         {
             case TurretType.Basic:
-                default:
+                turret.onHit = target =>
+                {
+                    target.takeDamage(turret.damage);
+                };
                 break;
-            case TurretType.AOE: 
+            case TurretType.AOE:
+                turret.onHit = target =>
+                {
+                    target.takeDamage(turret.damage);
+                };
                 break;
             case TurretType.Stun:
+                turret.onHit = target =>
+                {
+                    StartCoroutine(RemoveStun(target, 0.5f));
+                    target.stunned += 1;
+                };
                 break;
-            case TurretType.AllInOne:  
+            case TurretType.AllInOne:
+                turret.onHit = target =>
+                {
+                    target.takeDamage(turret.damage);
+                    StartCoroutine(RemoveStun(target, 0.5f));
+                    target.stunned += 1;
+                };
                 break;
-            case TurretType.Reverse: 
+            case TurretType.Reverse:
+                turret.onHit = target =>
+                {
+                    // custom logic lazim buna yeah
+                    // simdilik kendini yok edicek
+                    turretsToRemove.Add(turret);
+                };
                 break;
             case TurretType.Buff:
+                turret.onHit = target =>
+                {
+                    //bunu da sonra yapicaz
+                };
                 break;
             case TurretType.Debuff:
+                turret.onHit = target =>
+                {
+                    StartCoroutine(RemoveDebuff(target, 0.5f));
+                    target.debuffed += 1;
+                };
+                break;
+            default:
+                turret.onHit = target =>
+                {
+                    target.takeDamage(turret.damage);
+                };
                 break;
         }
-        GameObject newPhysical = Object.Instantiate(physical);
+    }
+
+    public void spawnTurret(Vector3 position, float damage, float attackCooldown, float reach, TurretType type, GameObject physical)
+    {
+        GameObject newPhysical = Instantiate(physical, transform);
         newPhysical.transform.position = position;
         Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, type, newPhysical);
+        
+        setOnHit(newTurret);
 
         turrets.Add(newTurret);
+    }
+    public void spawnTurret(Vector3 position, TurretType type, GameObject physical)
+    {
+        float damage, attackCooldown, reach;
+        switch (type) //şimdilik boş sonra tamamlayacağım // ben tamamladim
+        {
+            case TurretType.Basic:
+                damage = 2f;
+                attackCooldown = 0.3f;
+                reach = 2f;
+                break;
+            case TurretType.AOE: 
+                damage = 1f;
+                attackCooldown = 0.5f;
+                reach = 3f;
+                break;
+            case TurretType.Stun:
+                damage = 0f;
+                attackCooldown = 1f;
+                reach = 4f;
+                break;
+            case TurretType.AllInOne:
+                damage = 3f;
+                attackCooldown = 1f;
+                reach = 3f;
+                break;
+            case TurretType.Reverse:
+                damage = 0f;
+                attackCooldown = 15f; // uzun cunku custom eklicez vakit olursa olmazsa olmicak bu turret
+                reach = 0.5f;
+                break;
+            case TurretType.Buff:
+                damage = 0f;
+                attackCooldown = 100f;
+                reach = 2f;
+                break;
+            case TurretType.Debuff:
+                damage = 0f;
+                attackCooldown = 1f;
+                reach = 2f;
+                break;
+            default:
+                damage = 1f;
+                attackCooldown = 1f;
+                reach = 1f;
+                break;
+        }
+        GameObject newPhysical = Instantiate(physical, transform);
+        newPhysical.transform.position = position;
+        Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, type, newPhysical);
+        setOnHit(newTurret);
+
+        turrets.Add(newTurret);
+    }
+
+    public void deleteTurret(Turret turret)
+    {
+        Destroy(turret.physical);
+        turrets.Remove(turret);
     }
 
     void Update()
@@ -99,6 +220,7 @@ public class TurretManager : MonoBehaviour
             {
                 foreach (var enemy in EnemyManager.inst.enemies)
                 {
+                    if (enemy.dead) continue;
                     float dist = Vector3.Distance(turret.physical.transform.position, enemy.physical.transform.position);
                     if (dist <= turret.reach)
                     {
@@ -111,7 +233,7 @@ public class TurretManager : MonoBehaviour
             }
             else if (turret.state == TurretState.Attacking)
             {
-                if (turret.target == null)
+                if (turret.target == null || turret.target.dead)
                 {
                     turret.state = TurretState.Idle;
                     continue;
@@ -120,25 +242,44 @@ public class TurretManager : MonoBehaviour
                 if (dist > turret.reach)
                 {
                     turret.state = TurretState.Idle;
-                        Debug.Log("Enemy out of bounds..");
+                    Debug.Log("Enemy out of bounds..");
                     continue;
                 }
 
                 turret.t += dt;
                 if (turret.t >= turret.attackCooldown)
                 {
-                    ProjectileManager.inst.SpawnProjectile(11f, turret.physical.transform.position, 15f, turret.target.physical.transform);
-        
+                    Enemy snapshotTarget = turret.target;
                     Debug.Log("ATTACKED!!!");
+                    ProjectileManager.inst.spawnProjectile(
+                        turret.attackCooldown / 2f,
+                        turret.physical.transform.position,
+                        turret.target,
+                        GameManager.inst.projectilePrefabs[0],
+                        () => turret.onHit?.Invoke(snapshotTarget)
+                    );
                     turret.t -= turret.attackCooldown;
-                    bool dead = turret.target.takeDamage(turret.damage);
+                    bool dead = turret.target.health <= turret.damage;
                     if (dead)
                     {
+                        Debug.Log("Target destroyed!");
                         turret.state = TurretState.Idle;
+                        turret.target.dead = true;
+                        turret.target = null;
                         continue;
                     }
                 }
             }
         }
+        
     }
+    void LateUpdate()
+    {
+        foreach (var turret in turretsToRemove)
+        {
+            turrets.Remove(turret);
+        }
+        turretsToRemove.Clear();
+    }
+
 }

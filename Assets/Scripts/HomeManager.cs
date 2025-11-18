@@ -5,8 +5,10 @@ public enum HomeState
     Idle,
     Attacking
 }
-public class Home
+public class Home : ITarget
 {
+    public bool exists() => physical != null;
+    public Vector3 getPosition() => physical.transform.position;
     public float health = 10f;
     public float damage = 10f;
     public float attackCooldown = 1f;
@@ -48,11 +50,10 @@ public class HomeManager : MonoBehaviour
 {
     public static HomeManager inst;
     public Home home;
-    void Start()
+    void Awake()
     {
         if (inst == null) inst = this;
         else Destroy(gameObject);
-
     }
 
     public void spawnHome(Vector3 homePosition, float health, float damage, float attackCooldown, GameObject physical)
@@ -93,10 +94,26 @@ public class HomeManager : MonoBehaviour
 
                 if (home.target != null)  //Bu defa da home target olmadan attack etmeyi deniyordu (mal mı biraz neyse)
                 {
-                    bool dead = home.target.takeDamage(home.damage);
+                    Debug.Log("ATTACKED!!!");
+                    Enemy snapshotTarget = home.target;
+                    ProjectileManager.inst.spawnProjectile(
+                        home.attackCooldown / 2f,
+                        home.physical.transform.position,
+                        home.target,
+                        GameManager.inst.projectilePrefabs[0],
+                        () =>
+                        {
+                            snapshotTarget.takeDamage(home.damage);
+                        }
+                    );
+                    home.t -= home.attackCooldown;
+                    bool dead = home.target.health <= home.damage;
                     if (dead)
                     {
+                        Debug.Log("Target destroyed by home!");
+                        
                         home.state = HomeState.Idle;
+                        home.target.dead = true;
                         home.target = null;
                         return;
                     }
