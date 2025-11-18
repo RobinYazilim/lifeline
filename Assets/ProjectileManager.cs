@@ -39,8 +39,4 @@ public void SpawnProjectile(float speed, Vector3 position, float dispawnTime, Tr
         Destroy(obj, dispawnTime);
     }    
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 }
