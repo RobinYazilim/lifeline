@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum TurretState
 {
     Attacking,
-    Stunned,
     Idle,
 }
 
@@ -31,7 +31,7 @@ public class Turret
     public Enemy target;
     public Projectile projectile;
     public Action<Enemy> onHit; // bunu kullanarak ozel seyleri yapariz MUHTEMELEN
-    // stun fln seylerini iste
+    // stun fln seylerini iste // yaptim bile :p
 
 
 
@@ -47,6 +47,26 @@ public class Turret
         this.type = type;
         this.onHit = onHit;
 
+        LineRenderer lr = physical.GetComponent<LineRenderer>();
+        int segments = 100;
+        if (lr != null)
+        {
+            lr.loop = true;
+            lr.useWorldSpace = false;
+            Vector3[] points = new Vector3[segments];
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = (float)i / segments * Mathf.PI * 2f;
+        
+                float x = Mathf.Cos(angle) * reach;
+                float y = Mathf.Sin(angle) * reach;
+
+                points[i] = new Vector3(x, y, 0);
+            }
+
+            lr.positionCount = segments;
+            lr.SetPositions(points);
+        }
     }
 }
 
@@ -92,7 +112,16 @@ public class TurretManager : MonoBehaviour
             case TurretType.AOE:
                 turret.onHit = target =>
                 {
-                    target.takeDamage(turret.damage);
+                    Vector3 targetPos = target.physical.transform.position;
+                    foreach (var enemy in EnemyManager.inst.enemies)
+                    {
+                        float dist = Vector3.Distance(targetPos, enemy.physical.transform.position);
+                        if (dist <= 2f) // aoe ne kadar olsun
+                        {
+                            enemy.takeDamage(turret.damage);
+                        }
+                    }
+                    // target.takeDamage(turret.damage); galiba ustteki kod bunu yapiyo zaten ama GALIBA
                 };
                 break;
             case TurretType.Stun:
@@ -226,7 +255,6 @@ public class TurretManager : MonoBehaviour
                     {
                         turret.target = enemy;
                         turret.state = TurretState.Attacking;
-                        Debug.Log("FOUND ENEMY!!!");
                         break;
                     }
                 }
@@ -235,6 +263,7 @@ public class TurretManager : MonoBehaviour
             {
                 if (turret.target == null || turret.target.dead)
                 {
+                    turret.target = null;
                     turret.state = TurretState.Idle;
                     continue;
                 }
@@ -242,7 +271,6 @@ public class TurretManager : MonoBehaviour
                 if (dist > turret.reach)
                 {
                     turret.state = TurretState.Idle;
-                    Debug.Log("Enemy out of bounds..");
                     continue;
                 }
 
@@ -250,7 +278,6 @@ public class TurretManager : MonoBehaviour
                 if (turret.t >= turret.attackCooldown)
                 {
                     Enemy snapshotTarget = turret.target;
-                    Debug.Log("ATTACKED!!!");
                     ProjectileManager.inst.spawnProjectile(
                         turret.attackCooldown / 2f,
                         turret.physical.transform.position,
@@ -262,7 +289,6 @@ public class TurretManager : MonoBehaviour
                     bool dead = turret.target.health <= turret.damage;
                     if (dead)
                     {
-                        Debug.Log("Target destroyed!");
                         turret.state = TurretState.Idle;
                         turret.target.dead = true;
                         turret.target = null;

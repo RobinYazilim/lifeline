@@ -6,8 +6,7 @@ using UnityEngine;
 public enum EnemyState
 {
     Walking,
-    Attacking,
-    Stunned
+    Attacking
 }
 public enum EnemyType
 {
@@ -150,7 +149,9 @@ public class EnemyManager : MonoBehaviour
     }
     public void deleteEnemy(Enemy enemy)
     {
+        Debug.Log("Deleting enemy ID: " + enemy.id);
         Destroy(enemy.physical);
+        enemy.dead = true;
         enemies.Remove(enemy);
         
     }
@@ -162,6 +163,7 @@ public class EnemyManager : MonoBehaviour
         Color originalColor = sr.color;
         sr.color = Color.white;
         yield return new WaitForSeconds(0.1f);
+        if (sr == null) yield break;
         sr.color = originalColor;
     }
     void Update()
@@ -198,7 +200,6 @@ public class EnemyManager : MonoBehaviour
                 enemy.t += dt;
                 if (enemy.t >= enemy.attackCooldown)
                 {
-                        Debug.Log("Attacking the home base thing");
                     enemy.t -= enemy.attackCooldown;
                     bool dead = HomeManager.inst.home.takeDamage(enemy, enemy.damage);
                     if (dead)

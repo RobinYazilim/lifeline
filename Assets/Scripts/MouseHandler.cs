@@ -12,6 +12,10 @@ public class MouseHandler : MonoBehaviour
     {
         turretTypes = (TurretType[])System.Enum.GetValues(typeof(TurretType));
     }
+    private void Start()
+    {
+        UpdateSelectedTurret();
+    }
 
     private void OnEnable()
     {
@@ -60,7 +64,6 @@ public class MouseHandler : MonoBehaviour
 
     private void OnMouseClick(Vector3 clickPosition)
     {
-        Debug.Log("Mouse clicked at: " + clickPosition);
         GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
         TurretManager.inst.spawnTurret(clickPosition, selectedTurretType, prefab);
     }

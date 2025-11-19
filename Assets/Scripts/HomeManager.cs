@@ -30,7 +30,6 @@ public class Home : ITarget
     {
         if (this.target == null)
         {
-            Debug.Log("got new target!!!");
             this.target = damager;
             this.state = HomeState.Attacking;
         }
@@ -88,13 +87,11 @@ public class HomeManager : MonoBehaviour
             home.t += dt;
             if (home.t >= home.attackCooldown)
             {
-                Debug.Log("HOME ATTACKED!!!");
                 home.t -= home.attackCooldown;
 
 
                 if (home.target != null)  //Bu defa da home target olmadan attack etmeyi deniyordu (mal mı biraz neyse)
                 {
-                    Debug.Log("ATTACKED!!!");
                     Enemy snapshotTarget = home.target;
                     ProjectileManager.inst.spawnProjectile(
                         home.attackCooldown / 2f,
@@ -109,9 +106,7 @@ public class HomeManager : MonoBehaviour
                     home.t -= home.attackCooldown;
                     bool dead = home.target.health <= home.damage;
                     if (dead)
-                    {
-                        Debug.Log("Target destroyed by home!");
-                        
+                    {                        
                         home.state = HomeState.Idle;
                         home.target.dead = true;
                         home.target = null;
