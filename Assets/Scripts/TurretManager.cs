@@ -47,25 +47,10 @@ public class Turret
         this.type = type;
         this.onHit = onHit;
 
-        LineRenderer lr = physical.GetComponent<LineRenderer>();
-        int segments = 100;
-        if (lr != null)
+        LineRender lineRender = physical.GetComponent<LineRender>();
+        if (lineRender != null)
         {
-            lr.loop = true;
-            lr.useWorldSpace = false;
-            Vector3[] points = new Vector3[segments];
-            for (int i = 0; i < segments; i++)
-            {
-                float angle = (float)i / segments * Mathf.PI * 2f;
-        
-                float x = Mathf.Cos(angle) * reach;
-                float y = Mathf.Sin(angle) * reach;
-
-                points[i] = new Vector3(x, y, 0);
-            }
-
-            lr.positionCount = segments;
-            lr.SetPositions(points);
+            lineRender.setUpRenderer(reach);
         }
     }
 }
@@ -179,7 +164,7 @@ public class TurretManager : MonoBehaviour
 
         turrets.Add(newTurret);
     }
-    public void spawnTurret(Vector3 position, TurretType type, GameObject physical)
+    public (float, float, float) getTurretData(TurretType type)
     {
         float damage, attackCooldown, reach;
         switch (type) //şimdilik boş sonra tamamlayacağım // ben tamamladim
@@ -225,6 +210,12 @@ public class TurretManager : MonoBehaviour
                 reach = 1f;
                 break;
         }
+        return (damage, attackCooldown, reach);
+    }
+    public void spawnTurret(Vector3 position, TurretType type, GameObject physical)
+    {
+        (float damage, float attackCooldown, float reach) = getTurretData(type);
+        
         GameObject newPhysical = Instantiate(physical, transform);
         newPhysical.transform.position = position;
         Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, type, newPhysical);

@@ -19,7 +19,6 @@ public class MouseHandler : MonoBehaviour
     private void Start()
     {
         UpdateSelectedTurret();
-
     }
 
     private void OnEnable()
@@ -72,24 +71,27 @@ public class MouseHandler : MonoBehaviour
     }
 
     private void SpawnGhostPreview()
-{
-    if (ghostPreview != null)
-        Destroy(ghostPreview);
-
-    GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
-    ghostPreview = Instantiate(prefab);
-
-    SpriteRenderer[] renderers = ghostPreview.GetComponentsInChildren<SpriteRenderer>();
-    foreach (SpriteRenderer sr in renderers)
     {
-        Color c = sr.color;
-        c.a = 0.4f;
-        sr.color = c;
+        if (ghostPreview != null)
+            Destroy(ghostPreview);
+
+        GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
+        
+        
+        ghostPreview = Instantiate(prefab);
+        LineRender lineRender = ghostPreview.GetComponent<LineRender>();
+        lineRender.real = false;
+        lineRender.setUpRenderer(TurretManager.inst.getTurretData(selectedTurretType).Item3);
+        
+
+        SpriteRenderer[] renderers = ghostPreview.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in renderers)
+        {
+            Color c = sr.color;
+            c.a = 0.4f;
+            sr.color = c;
+        }
     }
-
-    
-
-}
 
 
     private void OnClickPerformed(InputAction.CallbackContext context)
