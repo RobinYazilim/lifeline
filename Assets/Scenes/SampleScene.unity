@@ -775,6 +775,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   selectedTurretType: 0
+  turretbought: 1
 --- !u!4 &645020803
 Transform:
   m_ObjectHideFlags: 0
