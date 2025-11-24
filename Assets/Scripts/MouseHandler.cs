@@ -112,6 +112,5 @@ public class MouseHandler : MonoBehaviour
             GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
             TurretManager.inst.spawnTurret(clickPosition, selectedTurretType, prefab);
         }
-        
     }
 }

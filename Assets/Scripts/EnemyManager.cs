@@ -92,8 +92,9 @@ public class EnemyManager : MonoBehaviour
 
         enemies.Add(newEnemy);
     }
-    public void spawnEnemy(EnemyType type, GameObject physical)
+    public void spawnEnemy(EnemyType type)
     {
+        GameObject physical = GameManager.inst.enemyPrefabs[(int) type];
         float speed, health, damage, attackCooldown;
         switch(type)
         {
@@ -173,6 +174,10 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         float dt = Time.deltaTime;
+        if (enemies.Count == 0 && WaveManager.inst.spawningFinished && !ShopManager.inst.shopVisible)
+        {
+            ShopManager.inst.showShop();
+        }
 
         foreach (var enemy in enemies)
         {
