@@ -39,7 +39,17 @@ public class WaveManager : MonoBehaviour
             spawningFinished = false;
             currentWave += 1;
 
+            
+
             Wave wave = waves[currentWave - 1];
+            int totalEnemies = 0;
+            foreach (var spawn in wave.spawns)
+            {
+                totalEnemies += spawn.count;
+            }
+            
+            ShopManager.inst.setEnemyCount(totalEnemies);
+
             foreach (var spawn in wave.spawns)
             {
                 for (int i = 0; i < spawn.count; i++)
@@ -54,8 +64,9 @@ public class WaveManager : MonoBehaviour
             
             spawningFinished = true;
             
-            yield return new WaitForSeconds(20f);
+            yield return new WaitUntil(() => EnemyManager.inst.enemies.Count == 0);
 
+            yield return StartCoroutine(ShopManager.inst.timerCoroutine(20f));
         }
         waveCoroutine = null;
     }

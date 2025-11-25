@@ -154,7 +154,7 @@ public class EnemyManager : MonoBehaviour
         Destroy(enemy.physical);
         enemy.dead = true;
         enemies.Remove(enemy);
-        
+        ShopManager.inst.removeEnemyCount();
     }
     public System.Collections.IEnumerator DamageFlash(GameObject physical)
     {
@@ -174,10 +174,6 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         float dt = Time.deltaTime;
-        if (enemies.Count == 0 && WaveManager.inst.spawningFinished && !ShopManager.inst.shopVisible)
-        {
-            ShopManager.inst.showShop();
-        }
 
         foreach (var enemy in enemies)
         {

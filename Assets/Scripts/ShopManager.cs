@@ -1,7 +1,6 @@
-using System.Data.SqlTypes;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
@@ -16,6 +15,7 @@ public class ShopManager : MonoBehaviour
     private RectTransform moneyRectTransform;
     private float speed = 5f;
     public int money = 10;
+    private int enemyCount = 0;
     private void Awake()
     {
         if (inst == null) inst = this;
@@ -31,6 +31,32 @@ public class ShopManager : MonoBehaviour
         ("Buff", TurretType.Buff, 1),
         ("Debuff", TurretType.Debuff, 10)
     };
+
+    public void removeEnemyCount()
+    {
+        enemyCount--;
+        transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>().text = $"Enemies left: {enemyCount}";
+    }
+    public void setEnemyCount(int num)
+    {
+        enemyCount = num;
+        transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>().text = $"Enemies left: {enemyCount}";
+    }
+
+    public IEnumerator timerCoroutine(float duration)
+    {
+        float timeLeft = duration;
+        TextMeshProUGUI text = transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>();
+
+        while (timeLeft > 0)
+        {
+            text.text = $"Next wave in: {timeLeft:F1}s";
+            timeLeft -= Time.deltaTime;
+            yield return null;
+        }
+
+        text.text = $"Next wave starting...";
+    }
 
     private void Start()
     {
