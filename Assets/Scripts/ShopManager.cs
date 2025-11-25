@@ -1,6 +1,7 @@
 using System.Data.SqlTypes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
@@ -13,7 +14,6 @@ public class ShopManager : MonoBehaviour
     private RectTransform rectTransform;
     private RectTransform shopBtnRectTransform;
     private RectTransform moneyRectTransform;
-    private Button shopOpenButton;
     private float speed = 5f;
     public int money = 10;
     private void Awake()
@@ -37,12 +37,19 @@ public class ShopManager : MonoBehaviour
         rectTransform = transform.Find("Frame").GetComponent<RectTransform>();
         shopBtnRectTransform = transform.Find("Open").GetComponent<RectTransform>();
         moneyRectTransform = transform.Find("Money").GetComponent<RectTransform>();
-        shopOpenButton = transform.Find("Open").GetComponent<Button>();
-        shopOpenButton.onClick.AddListener(() =>
+        transform.Find("Open").GetComponent<Button>().onClick.AddListener(() =>
         {
+            if (MouseHandler.inst.turretbought)
+                return;
             showShop();
         });
 
+        transform.Find("Frame/Close").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            if (MouseHandler.inst.turretbought)
+                return;
+            hideShop();
+        });
         
 
         foreach (var (name, type, price) in turrets)
@@ -52,10 +59,12 @@ public class ShopManager : MonoBehaviour
             textComp.text = $"{name}\n${price}";
             btn.onClick.AddListener(() =>
             {
+                if (MouseHandler.inst.turretbought)
+                    return;
                 if (money < price) return;
                 money -= price;
                 MouseHandler.inst.BuyTurret(type);
-                hideShop();
+                hideShopPurchaseMode();
             });
         }
     }
@@ -74,6 +83,13 @@ public class ShopManager : MonoBehaviour
         endGoal = new Vector2(273.2102f, 56.37762f);
         shopBtnEndGoal = new Vector2(-113.9971f, -66.99463f);
         moneyEndGoal = new Vector2(-322f, -66.99463f);
+    }
+    
+    public void hideShopPurchaseMode()
+    {
+        endGoal = new Vector2(273.2102f, 56.37762f);
+        shopBtnEndGoal = new Vector2(-113.9971f, 66.99463f);
+        moneyEndGoal = new Vector2(-113.9971f, -66.99463f);
     }
 
     public void Update()

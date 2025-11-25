@@ -11,7 +11,7 @@ public class MouseHandler : MonoBehaviour
     // private int turretIndex = 0;
     private TurretType[] turretTypes;
     private GameObject ghostPreview;
-    private bool turretbought = false; //shop olmadığı için true yaptım sonra false a çevirin 
+    public bool turretbought = false; //shop olmadığı için true yaptım sonra false a çevirin 
 
     public static MouseHandler inst;
 

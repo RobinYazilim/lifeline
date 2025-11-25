@@ -1232,6 +1232,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   currentWave: 0
   spawningFinished: 0
+  waves:
+  - spawns:
+    - type: 0
+      count: 7
+      delay: 1
+      waitAfter: 1
+    - type: 0
+      count: 3
+      delay: 1
+      waitAfter: 0
+  - spawns:
+    - type: 1
+      count: 2
+      delay: 0.3
+      waitAfter: 0
+    - type: 2
+      count: 1
+      delay: 0.3
+      waitAfter: 0
 --- !u!4 &434225958
 Transform:
   m_ObjectHideFlags: 0
@@ -1929,6 +1948,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   selectedTurretType: 0
+  turretbought: 0
 --- !u!4 &645020803
 Transform:
   m_ObjectHideFlags: 0
@@ -2027,8 +2047,8 @@ Canvas:
   m_GameObject: {fileID: 652447412}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2039,7 +2059,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_TargetDisplay: 0
 --- !u!224 &652447417
 RectTransform:
