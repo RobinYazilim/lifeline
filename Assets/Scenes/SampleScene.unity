@@ -1243,13 +1243,222 @@ MonoBehaviour:
       delay: 1
       waitAfter: 0
   - spawns:
-    - type: 1
-      count: 2
-      delay: 0.3
+    - type: 0
+      count: 6
+      delay: 0.5
       waitAfter: 0
     - type: 2
+      count: 4
+      delay: 1
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 6
+      delay: 0.5
+      waitAfter: 0
+    - type: 1
+      count: 4
+      delay: 1
+      waitAfter: 0
+    - type: 0
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 6
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
       count: 1
-      delay: 0.3
+      delay: 1
+      waitAfter: 0
+    - type: 2
+      count: 3
+      delay: 1
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 3
+      delay: 1
+      waitAfter: 0
+    - type: 1
+      count: 3
+      delay: 0.5
+      waitAfter: 0
+    - type: 0
+      count: 3
+      delay: 1
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 2
+      delay: 1.5
+      waitAfter: 1
+    - type: 1
+      count: 1
+      delay: 1
+      waitAfter: 0
+    - type: 4
+      count: 3
+      delay: 1
+      waitAfter: 0
+  - spawns:
+    - type: 2
+      count: 5
+      delay: 1
+      waitAfter: 0
+    - type: 4
+      count: 2
+      delay: 1.5
+      waitAfter: 1
+    - type: 3
+      count: 1
+      delay: 1
+      waitAfter: 0
+    - type: 4
+      count: 3
+      delay: 1
+      waitAfter: 0
+    - type: 3
+      count: 2
+      delay: 0.5
+      waitAfter: 0
+    - type: 1
+      count: 2
+      delay: 0.5
+      waitAfter: 1
+    - type: 1
+      count: 2
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 3
+      delay: 1
+      waitAfter: 1
+    - type: 2
+      count: 5
+      delay: 1
+      waitAfter: 0
+    - type: 4
+      count: 4
+      delay: 1
+      waitAfter: 0
+    - type: 3
+      count: 2
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 3
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 1
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 6
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 4
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 1
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 6
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 6
+      delay: 0.5
+      waitAfter: 0
+    - type: 0
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 3
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 5
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 5
+      count: 1
+      delay: 0.5
       waitAfter: 0
 --- !u!4 &434225958
 Transform:
@@ -3011,7 +3220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 273.2102, y: 56.37762}
+  m_AnchoredPosition: {x: 273.21014, y: 56.37762}
   m_SizeDelta: {x: 526.4197, y: 1038.0182}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381703393
