@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -24,6 +25,7 @@ public class Enemy : ITarget
     public float speed = 1f;
     public int id;
     public float health = 10f;
+    public int money = 10;
     public float damage = 10f;
     public float attackCooldown = 1f;
     public GameObject physical;
@@ -41,6 +43,7 @@ public class Enemy : ITarget
         this.speed = speed;
         this.id = id;
         this.health = health;
+        this.money = (int) health; // money = health for now
         this.damage = damage;
         this.physical = physical;
         this.attackCooldown = attackCooldown;
@@ -52,6 +55,9 @@ public class Enemy : ITarget
         this.health -= dmgTaken;
         if (this.health <= 0)
         {
+            // on god on my mama on everything i wont ever do death code in the damage code again
+            ShopManager.inst.money += this.money * WaveManager.inst.currentWave;
+
             this.health = 0;
             EnemyManager.inst.enemiesToRemove.Add(this);
             return true;

@@ -9,7 +9,6 @@ public class MouseHandler : MonoBehaviour
     public InputAction clickAction;
     public TurretType selectedTurretType = TurretType.Basic;
     // private int turretIndex = 0;
-    private TurretType[] turretTypes;
     private GameObject ghostPreview;
     public bool turretbought = false; //shop olmadığı için true yaptım sonra false a çevirin 
 
@@ -19,13 +18,8 @@ public class MouseHandler : MonoBehaviour
 
     private void Awake()
     {
-        if (MouseHandler.inst == null) MouseHandler.inst = this;
+        if (inst == null) inst = this;
         else Destroy(gameObject);
-        turretTypes = (TurretType[])System.Enum.GetValues(typeof(TurretType));
-    }
-    private void Start()
-    {
-        // UpdateSelectedTurret();
     }
 
     private void OnEnable()
@@ -48,38 +42,15 @@ public class MouseHandler : MonoBehaviour
 
         onUi = EventSystem.current.IsPointerOverGameObject(-1);
 
-        // float scroll = Mouse.current.scroll.ReadValue().y;
-
-        // if (scroll > 0f)
-        // {
-        //     turretIndex = (turretIndex + 1) % turretTypes.Length;
-        //     UpdateSelectedTurret();
-        // }
-        // else if (scroll < 0f)
-        // {
-        //     turretIndex--;
-        //     if (turretIndex < 0) turretIndex = turretTypes.Length - 1;
-        //     UpdateSelectedTurret();
         
-        // }
         if (ghostPreview != null && turretbought)
         {
             ghostPreview.transform.position = mouseWorldPos;
         }
-            
-        
-
     }
-    // private void UpdateSelectedTurret()
-    // {
-    //     selectedTurretType = turretTypes[turretIndex];
-    //     SpawnGhostPreview();
-    //     //TurretMenu.inst.UpdateTurretName(selectedTurretType.ToString());
-        
-    // }
+    
     public void BuyTurret(TurretType type)
     {
-        
         turretbought = true;
         selectedTurretType = type;
         SpawnGhostPreview();
