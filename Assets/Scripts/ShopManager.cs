@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager inst;
+    public bool shopVisible = false;
     private Vector2 endGoal = new Vector2(273.2102f, 56.37762f);
     private Vector2 shopBtnEndGoal = new Vector2(-113.9971f, -66.99463f);
     private Vector2 moneyEndGoal = new Vector2(-322f, -66.99463f);
@@ -61,6 +62,7 @@ public class ShopManager : MonoBehaviour
 
     public void showShop()
     {
+        shopVisible = true;
         endGoal = new Vector2(-273.2102f, 56.37762f);
         shopBtnEndGoal = new Vector2(-113.9971f, 66.99463f);
         moneyEndGoal = new Vector2(-642.41715f, -66.99463f);
@@ -68,6 +70,7 @@ public class ShopManager : MonoBehaviour
 
     public void hideShop()
     {
+        shopVisible = false;
         endGoal = new Vector2(273.2102f, 56.37762f);
         shopBtnEndGoal = new Vector2(-113.9971f, -66.99463f);
         moneyEndGoal = new Vector2(-322f, -66.99463f);
