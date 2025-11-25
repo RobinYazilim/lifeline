@@ -1,24 +1,31 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+
 
 public class MouseHandler : MonoBehaviour
 {
 
     public InputAction clickAction;
     public TurretType selectedTurretType = TurretType.Basic;
-    private int turretIndex = 0;
+    // private int turretIndex = 0;
     private TurretType[] turretTypes;
     private GameObject ghostPreview;
-    public bool turretbought = true; //shop olmadığı için true yaptım sonra false a çevirin 
+    private bool turretbought = false; //shop olmadığı için true yaptım sonra false a çevirin 
 
+    public static MouseHandler inst;
+
+    private bool onUi = false;
 
     private void Awake()
     {
+        if (MouseHandler.inst == null) MouseHandler.inst = this;
+        else Destroy(gameObject);
         turretTypes = (TurretType[])System.Enum.GetValues(typeof(TurretType));
     }
     private void Start()
     {
-        UpdateSelectedTurret();
+        // UpdateSelectedTurret();
     }
 
     private void OnEnable()
@@ -39,20 +46,22 @@ public class MouseHandler : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
         mouseWorldPos.z = 0f;
 
-        float scroll = Mouse.current.scroll.ReadValue().y;
+        onUi = EventSystem.current.IsPointerOverGameObject(-1);
 
-        if (scroll > 0f)
-        {
-            turretIndex = (turretIndex + 1) % turretTypes.Length;
-            UpdateSelectedTurret();
-        }
-        else if (scroll < 0f)
-        {
-            turretIndex--;
-            if (turretIndex < 0) turretIndex = turretTypes.Length - 1;
-            UpdateSelectedTurret();
+        // float scroll = Mouse.current.scroll.ReadValue().y;
+
+        // if (scroll > 0f)
+        // {
+        //     turretIndex = (turretIndex + 1) % turretTypes.Length;
+        //     UpdateSelectedTurret();
+        // }
+        // else if (scroll < 0f)
+        // {
+        //     turretIndex--;
+        //     if (turretIndex < 0) turretIndex = turretTypes.Length - 1;
+        //     UpdateSelectedTurret();
         
-        }
+        // }
         if (ghostPreview != null && turretbought)
         {
             ghostPreview.transform.position = mouseWorldPos;
@@ -61,13 +70,19 @@ public class MouseHandler : MonoBehaviour
         
 
     }
-    private void UpdateSelectedTurret()
-    {
-        selectedTurretType = turretTypes[turretIndex];
-        SpawnGhostPreview();
-        // Update your menu/UI here
-        TurretMenu.inst.UpdateTurretName(selectedTurretType.ToString());
+    // private void UpdateSelectedTurret()
+    // {
+    //     selectedTurretType = turretTypes[turretIndex];
+    //     SpawnGhostPreview();
+    //     //TurretMenu.inst.UpdateTurretName(selectedTurretType.ToString());
         
+    // }
+    public void BuyTurret(TurretType type)
+    {
+        
+        turretbought = true;
+        selectedTurretType = type;
+        SpawnGhostPreview();
     }
 
     private void SpawnGhostPreview()
@@ -75,7 +90,7 @@ public class MouseHandler : MonoBehaviour
         if (ghostPreview != null)
             Destroy(ghostPreview);
 
-        GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
+        GameObject prefab = GameManager.inst.turretPrefabs[(int) selectedTurretType];
         
         
         ghostPreview = Instantiate(prefab);
@@ -96,6 +111,9 @@ public class MouseHandler : MonoBehaviour
 
     private void OnClickPerformed(InputAction.CallbackContext context)
     {
+        if (onUi)
+            return;
+ 
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
@@ -109,8 +127,10 @@ public class MouseHandler : MonoBehaviour
     {
         if (turretbought)
         {
-            GameObject prefab = GameManager.inst.turretPrefabs[turretIndex];
-            TurretManager.inst.spawnTurret(clickPosition, selectedTurretType, prefab);
+            TurretManager.inst.spawnTurret(clickPosition, selectedTurretType);
+            ShopManager.inst.showShop();
+            turretbought = false;
+            Destroy(ghostPreview);
         }
     }
 }

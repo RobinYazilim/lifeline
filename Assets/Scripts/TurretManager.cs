@@ -212,10 +212,11 @@ public class TurretManager : MonoBehaviour
         }
         return (damage, attackCooldown, reach);
     }
-    public void spawnTurret(Vector3 position, TurretType type, GameObject physical)
+    public void spawnTurret(Vector3 position, TurretType type)
     {
         (float damage, float attackCooldown, float reach) = getTurretData(type);
         
+        GameObject physical = GameManager.inst.turretPrefabs[(int) type];
         GameObject newPhysical = Instantiate(physical, transform);
         newPhysical.transform.position = position;
         Turret newTurret = new Turret(turrets.Count, damage, attackCooldown, reach, type, newPhysical);
