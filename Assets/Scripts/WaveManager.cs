@@ -32,62 +32,6 @@ public class WaveManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    IEnumerator waveFunction()
-    {
-        spawningFinished = false;
-        switch (currentWave)
-        {
-            case 1:
-                for (int i = 1; i <= 7; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Basic);
-                    yield return new WaitForSeconds(1f);
-                }
-                yield return new WaitForSeconds(1f);
-                for (int i = 1; i <= 3; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Basic);
-                    yield return new WaitForSeconds(1f);
-                }
-                break;
-            case 2:
-                for (int i = 1; i <= 2; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Fast);
-                    yield return new WaitForSeconds(0.3f);
-                }
-                for (int i = 1; i <= 1; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Tank);
-                    yield return new WaitForSeconds(0.3f);
-                }
-                break;
-            case 3:
-                for (int i = 1; i <= 2; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Fast);
-                    yield return new WaitForSeconds(0.3f);
-                }
-                for (int i = 1; i <= 1; i++)
-                {
-                    EnemyManager.inst.spawnEnemy(EnemyType.Tank);
-                    yield return new WaitForSeconds(0.3f);
-                }
-                break;
-            default:
-                break;
-        }
-        spawningFinished = true;
-        yield return new WaitForSeconds(20f);
-        spawnNextWave();
-    }
-
-    public void spawnNextWave()
-    {
-        currentWave += 1;
-        StartCoroutine(waveFunction());
-    }
-
     private IEnumerator waveLoop()
     {
         while (currentWave < waves.Count)
