@@ -76,6 +76,8 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> enemies;
     public List<Enemy> enemiesToRemove;
 
+    public Material flashMat;
+
     void Awake()
     {
         if (inst == null) inst = this;
@@ -167,11 +169,11 @@ public class EnemyManager : MonoBehaviour
         SpriteRenderer sr = physical.GetComponent<SpriteRenderer>();
         if (sr == null) yield break;
         
-        Color originalColor = sr.color;
-        sr.color = Color.white;
+        Material originalMat = sr.material;
+        sr.material = flashMat;
         yield return new WaitForSeconds(0.1f);
         if (sr == null) yield break;
-        sr.color = originalColor;
+        sr.material = originalMat;
     }
     void Update()
     {
