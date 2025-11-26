@@ -25,11 +25,11 @@ public class ShopManager : MonoBehaviour
     (string name, TurretType type, int price)[] turrets = new (string, TurretType, int)[]
     {
         ("Basic", TurretType.Basic, 10),
-        ("AOE", TurretType.AOE, 20),
-        ("Stun", TurretType.Stun, 15),
-        ("AllInOne", TurretType.AllInOne, 30),
-        ("Buff", TurretType.Buff, 1),
-        ("Debuff", TurretType.Debuff, 10)
+        ("AOE", TurretType.AOE, 30),
+        ("Stun", TurretType.Stun, 45),
+        ("AllInOne", TurretType.AllInOne, 100),
+        ("Buff", TurretType.Buff, 5),
+        ("Debuff", TurretType.Debuff, 20)
     };
 
     public void removeEnemyCount()

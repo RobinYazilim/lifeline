@@ -43,7 +43,7 @@ public class Enemy : ITarget
         this.speed = speed;
         this.id = id;
         this.health = health;
-        this.money = (int) health; // money = health for now
+        this.money = (int) health/2; // money = health for now
         this.damage = damage;
         this.physical = physical;
         this.attackCooldown = attackCooldown;
@@ -106,13 +106,13 @@ public class EnemyManager : MonoBehaviour
         {
             case EnemyType.Fast:
                 speed = 5f;
-                health = 5f;
+                health = 10f;
                 damage = 2f;
                 attackCooldown = 0.33f;
                 break;
             case EnemyType.Tank:
                 speed = 1f;
-                health = 15f;
+                health = 30f;
                 damage = 5f;
                 attackCooldown = 3f;
                 break;
@@ -130,13 +130,13 @@ public class EnemyManager : MonoBehaviour
                 break;
             case EnemyType.Debuff:
                 speed = 2f;
-                health = 5f;
+                health = 10f;
                 damage = 10f;
                 attackCooldown = 2f;
                 break;
             case EnemyType.Basic:
                 speed = 2f;
-                health = 5f;
+                health = 10f;
                 damage = 2f;
                 attackCooldown = 2f;
                 break;
