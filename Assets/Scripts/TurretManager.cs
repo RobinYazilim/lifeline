@@ -84,6 +84,23 @@ public class TurretManager : MonoBehaviour
         target.debuffed -= 1;
     }
 
+    public bool turretPosBlocked(Vector3 pos)
+    {
+        bool isOnPath = PathManager.inst.isOnPath(pos);
+        if (isOnPath)
+            return true;
+        
+        foreach (var turret in turrets)
+        {
+            if (turret == null || turret.physical == null) continue;
+            float dist = Vector3.Distance(pos, turret.physical.transform.position);
+            if (dist < 0.5f) // turretlar arasi minimum mesafe
+                return true;
+        }
+
+        return false;
+    }
+
     private void setOnHit(Turret turret)
     {
         switch (turret.type)

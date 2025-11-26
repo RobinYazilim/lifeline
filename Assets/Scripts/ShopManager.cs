@@ -98,14 +98,20 @@ public class ShopManager : MonoBehaviour
             Button btn = transform.Find($"Frame/{name}").GetComponent<Button>();
             TextMeshProUGUI textComp = btn.transform.Find("InnerText").GetComponent<TextMeshProUGUI>();
             textComp.text = $"{name}\n${price}";
+            int ogPrice = price;
+            int editablePrice = price;
+            int boughtCount = 0;
             btn.onClick.AddListener(() =>
             {
                 if (MouseHandler.inst.turretbought)
                     return;
-                if (money < price) return;
-                money -= price;
+                if (money < editablePrice) return;
+                money -= editablePrice;
+                boughtCount++;
+                editablePrice = ogPrice + ogPrice/2 * boughtCount;
                 MouseHandler.inst.BuyTurret(type);
                 hideShopPurchaseMode();
+                textComp.text = $"{name}\n${editablePrice}";
             });
         }
     }

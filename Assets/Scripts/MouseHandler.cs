@@ -13,6 +13,7 @@ public class MouseHandler : MonoBehaviour
     public bool turretbought = false; //shop olmadığı için true yaptım sonra false a çevirin 
 
     public static MouseHandler inst;
+    private Color ogColor;
 
     private bool onUi = false;
 
@@ -45,8 +46,24 @@ public class MouseHandler : MonoBehaviour
         
         if (ghostPreview != null && turretbought)
         {
+            
+            if (TurretManager.inst.turretPosBlocked(mouseWorldPos))
+            {
+                // pathte red
+                SpriteRenderer sr = ghostPreview.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.color = new Color(0.4f, 0.4f, 0.4f, 0.2f);
+            }
+            else
+            {
+                // pathte değil 
+                SpriteRenderer sr = ghostPreview.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.color = ogColor;
+            }
             ghostPreview.transform.position = mouseWorldPos;
         }
+
     }
     
     public void BuyTurret(TurretType type)
@@ -62,7 +79,7 @@ public class MouseHandler : MonoBehaviour
             Destroy(ghostPreview);
 
         GameObject prefab = GameManager.inst.turretPrefabs[(int) selectedTurretType];
-        
+        ogColor = prefab.GetComponent<SpriteRenderer>().color;
         
         ghostPreview = Instantiate(prefab);
         LineRender lineRender = ghostPreview.GetComponent<LineRender>();
@@ -89,6 +106,9 @@ public class MouseHandler : MonoBehaviour
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
         mouseWorldPos.z = 0f;
+
+        if (TurretManager.inst.turretPosBlocked(mouseWorldPos))
+            return;
         
         OnMouseClick(mouseWorldPos);
         

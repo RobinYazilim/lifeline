@@ -34,6 +34,7 @@ public class Enemy : ITarget
     public int currentIndex = 1;
     public int stunned = 0; // 0dan farkliysa stun var + - yapiyoz cunku oyle 6 yillik gamedev experiencim var trust me bro
     public int debuffed = 0; // ayni sey
+    public int buffed = 0;
 
     public EnemyState state = EnemyState.Walking;
     public EnemyType type;
@@ -77,6 +78,7 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> enemiesToRemove;
 
     public Material flashMat;
+    public Material originalMat;
 
     void Awake()
     {
@@ -168,8 +170,8 @@ public class EnemyManager : MonoBehaviour
     {
         SpriteRenderer sr = physical.GetComponent<SpriteRenderer>();
         if (sr == null) yield break;
-        
-        Material originalMat = sr.material;
+        ParticleSystem ps = physical.GetComponent<ParticleSystem>();
+        ps.Play();
         sr.material = flashMat;
         yield return new WaitForSeconds(0.1f);
         if (sr == null) yield break;
