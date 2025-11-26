@@ -1176,6 +1176,7 @@ MonoBehaviour:
   - {fileID: 494720081}
   - {fileID: 689153400}
   - {fileID: 1777286583}
+  radius: 0.5
 --- !u!4 &364606000
 Transform:
   m_ObjectHideFlags: 0
@@ -7970,83 +7971,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6872834350224842884, guid: 7f3626ab386734596bec8ec4c008efee, type: 3}
   m_PrefabInstance: {fileID: 1172286856}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1191185915
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.07025
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.76216
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 465461515866841758, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3986690887656586241, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_Name
-      value: OrangeCircleEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 9093348612448273681, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9093348612448273681, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9093348612448273681, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9093348612448273681, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9093348612448273681, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 2c0c43f140a20cd41ab39fe808f146e1, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9a286a1f8ef0d0742a4d947ddaade82f, type: 3}
 --- !u!1 &1224248286
 GameObject:
   m_ObjectHideFlags: 0
@@ -8076,6 +8000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38fe330b2db2b1d4298a7819eab9a223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  flashMat: {fileID: 2100000, guid: 2c0c43f140a20cd41ab39fe808f146e1, type: 2}
+  originalMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &1224248288
 Transform:
   m_ObjectHideFlags: 0
@@ -9909,4 +9835,3 @@ SceneRoots:
   - {fileID: 434225958}
   - {fileID: 652447417}
   - {fileID: 947188494}
-  - {fileID: 1191185915}
