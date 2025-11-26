@@ -14,6 +14,8 @@ public class ShopManager : MonoBehaviour
     private RectTransform shopBtnRectTransform;
     private RectTransform moneyRectTransform;
     private float speed = 5f;
+    private bool skip = false;
+    private bool canSkip = false;
     public int money = 10;
     private int enemyCount = 0;
     private void Awake()
@@ -47,13 +49,19 @@ public class ShopManager : MonoBehaviour
     {
         float timeLeft = duration;
         TextMeshProUGUI text = transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>();
-
+        canSkip = true;
         while (timeLeft > 0)
         {
+            if (skip)
+            {
+                skip = false;
+                break;
+            }
             text.text = $"Next wave in: {timeLeft:F1}s";
             timeLeft -= Time.deltaTime;
             yield return null;
         }
+        canSkip = false;
 
         text.text = $"Next wave starting...";
     }
@@ -74,6 +82,13 @@ public class ShopManager : MonoBehaviour
         {
             if (MouseHandler.inst.turretbought)
                 return;
+            hideShop();
+        });
+        transform.Find("Frame/Skip").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            if (MouseHandler.inst.turretbought || !canSkip)
+                return;
+            skip = true;
             hideShop();
         });
         

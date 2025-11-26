@@ -42,9 +42,9 @@ public class Enemy : ITarget
     {
         this.speed = speed;
         this.id = id;
-        this.health = health;
+        this.health = health * WaveManager.inst.currentWave;
         this.money = (int) health/2; // money = health for now
-        this.damage = damage;
+        this.damage = damage * WaveManager.inst.currentWave;
         this.physical = physical;
         this.attackCooldown = attackCooldown;
         this.type = type;

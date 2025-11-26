@@ -152,7 +152,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.15094376
+        value: 0.06547928
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineRender
   lineRenderer: {fileID: -7644311122779537336}
+  real: 1
 --- !u!61 &-4991488529042349281
 BoxCollider2D:
   m_ObjectHideFlags: 0
