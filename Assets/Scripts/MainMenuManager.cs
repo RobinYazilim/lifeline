@@ -6,10 +6,9 @@ public class MainMenuManager : MonoBehaviour
 {
    public GameObject MainMenuCanvas;
     public GameObject SettingsCanvas;
-
     public void OnPlayButtonClicked()
     {
-    //oyun scene aç
+    SceneManager.LoadScene("SampleScene");
     }
 
     public void OnQuitButtonClicked()
