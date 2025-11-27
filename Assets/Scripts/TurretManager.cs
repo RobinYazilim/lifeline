@@ -10,7 +10,7 @@ public enum TurretState
 
 public enum TurretType
 {
-    Basic,
+    Basic, //favorimiz
     AOE,
     Stun,
     AllInOne,
@@ -32,7 +32,8 @@ public class Turret
     public Projectile projectile;
     public Action<Enemy> onHit; // bunu kullanarak ozel seyleri yapariz MUHTEMELEN
     // stun fln seylerini iste // yaptim bile :p
-
+    public int buffed = 0;
+    public int debuffed = 0;
 
 
 
@@ -60,6 +61,8 @@ public class TurretManager : MonoBehaviour
     public static TurretManager inst;
 
     private List<Turret> turrets;
+
+    public int maxTurretCount = 15;
     private List<Turret> turretsToRemove;
     
     void Awake()
@@ -101,6 +104,28 @@ public class TurretManager : MonoBehaviour
         return false;
     }
 
+    public bool canSpawnTurret()
+    {
+        return turrets.Count < maxTurretCount;
+    }
+
+    private float getTurretDamageMultiplier(Turret turret)
+    {
+        int diff = turret.debuffed - turret.buffed;
+        if (diff > 0)
+        {
+            return 0.5f;
+        }
+        else if (diff < 0)
+        {
+            return 1.5f;
+        }
+        else
+        {
+            return 1f;
+        }
+    }
+
     private void setOnHit(Turret turret)
     {
         switch (turret.type)
@@ -108,7 +133,7 @@ public class TurretManager : MonoBehaviour
             case TurretType.Basic:
                 turret.onHit = target =>
                 {
-                    target.takeDamage(turret.damage);
+                    target.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
                 };
                 break;
             case TurretType.AOE:
@@ -120,7 +145,7 @@ public class TurretManager : MonoBehaviour
                         float dist = Vector3.Distance(targetPos, enemy.physical.transform.position);
                         if (dist <= 2f) // aoe ne kadar olsun
                         {
-                            enemy.takeDamage(turret.damage);
+                            enemy.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
                         }
                     }
                     // target.takeDamage(turret.damage); galiba ustteki kod bunu yapiyo zaten ama GALIBA
@@ -129,16 +154,28 @@ public class TurretManager : MonoBehaviour
             case TurretType.Stun:
                 turret.onHit = target =>
                 {
-                    StartCoroutine(RemoveStun(target, 0.5f));
+                    StartCoroutine(RemoveStun(target, 0.2f));
                     target.stunned += 1;
                 };
                 break;
             case TurretType.AllInOne:
                 turret.onHit = target =>
                 {
-                    target.takeDamage(turret.damage);
-                    StartCoroutine(RemoveStun(target, 0.5f));
+                    Vector3 targetPos = target.physical.transform.position;
+                    foreach (var enemy in EnemyManager.inst.enemies)
+                    {
+                        float dist = Vector3.Distance(targetPos, enemy.physical.transform.position);
+                        if (dist <= 2f) // aoe ne kadar olsun
+                        {
+                            enemy.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
+                        }
+                    }
+                    
+                    StartCoroutine(RemoveStun(target, 0.1f));
                     target.stunned += 1;
+
+                    StartCoroutine(RemoveDebuff(target, 0.2f));
+                    target.debuffed += 1;
                 };
                 break;
             case TurretType.Reverse:
@@ -187,13 +224,22 @@ public class TurretManager : MonoBehaviour
         switch (type) //şimdilik boş sonra tamamlayacağım // ben tamamladim
         {
             case TurretType.Basic:
-                damage = 2f;
-                attackCooldown = 0.3f;
+                float rand = UnityEngine.Random.Range(0f, 1f);
+                if (rand < 0.1f)
+                {
+                    damage = 2f;
+                    attackCooldown = 0.33f;
+                }
+                else
+                {
+                    damage = 1f;
+                    attackCooldown = 0.5f;
+                }
                 reach = 2f;
                 break;
             case TurretType.AOE: 
-                damage = 1f;
-                attackCooldown = 0.5f;
+                damage = 4f;
+                attackCooldown = 1.5f;
                 reach = 3f;
                 break;
             case TurretType.Stun:

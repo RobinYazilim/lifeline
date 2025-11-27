@@ -24,16 +24,19 @@ public class Home : ITarget
         this.damage = damage;
         this.physical = physical;
         this.attackCooldown = attackCooldown;
+        HomeManager.inst.mainHomeHealth = this.health;
     }
 
     public bool takeDamage(Enemy damager, float dmgTaken)
     {
+        
         if (this.target == null)
         {
             this.target = damager;
             this.state = HomeState.Attacking;
         }
         this.health -= dmgTaken;
+        HomeManager.inst.mainHomeHealth = this.health;
         if (this.health <= 0)
         {
             Debug.Log("im fr dead");
@@ -48,6 +51,7 @@ public class Home : ITarget
 public class HomeManager : MonoBehaviour
 {
     public static HomeManager inst;
+    public float mainHomeHealth = 100f;
     public Home home;
     void Awake()
     {

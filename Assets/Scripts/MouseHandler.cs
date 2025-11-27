@@ -43,13 +43,13 @@ public class MouseHandler : MonoBehaviour
 
         onUi = EventSystem.current.IsPointerOverGameObject(-1);
 
-        
+
         if (ghostPreview != null && turretbought)
         {
-            
-            if (TurretManager.inst.turretPosBlocked(mouseWorldPos))
+
+            if (TurretManager.inst.turretPosBlocked(mouseWorldPos) || !TurretManager.inst.canSpawnTurret())
             {
-                // pathte red
+                // pathte g˘ruyÚ göster
                 SpriteRenderer sr = ghostPreview.GetComponent<SpriteRenderer>();
                 if (sr != null)
                     sr.color = new Color(0.4f, 0.4f, 0.4f, 0.2f);
@@ -65,7 +65,7 @@ public class MouseHandler : MonoBehaviour
         }
 
     }
-    
+
     public void BuyTurret(TurretType type)
     {
         turretbought = true;
@@ -78,14 +78,14 @@ public class MouseHandler : MonoBehaviour
         if (ghostPreview != null)
             Destroy(ghostPreview);
 
-        GameObject prefab = GameManager.inst.turretPrefabs[(int) selectedTurretType];
+        GameObject prefab = GameManager.inst.turretPrefabs[(int)selectedTurretType];
         ogColor = prefab.GetComponent<SpriteRenderer>().color;
-        
+
         ghostPreview = Instantiate(prefab);
         LineRender lineRender = ghostPreview.GetComponent<LineRender>();
         lineRender.real = false;
         lineRender.setUpRenderer(TurretManager.inst.getTurretData(selectedTurretType).Item3);
-        
+
 
         SpriteRenderer[] renderers = ghostPreview.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sr in renderers)
@@ -101,7 +101,9 @@ public class MouseHandler : MonoBehaviour
     {
         if (onUi)
             return;
- 
+        if (TurretManager.inst.canSpawnTurret() == false)
+            return;
+
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
@@ -110,8 +112,9 @@ public class MouseHandler : MonoBehaviour
         if (TurretManager.inst.turretPosBlocked(mouseWorldPos))
             return;
         
+
         OnMouseClick(mouseWorldPos);
-        
+
     }
 
     private void OnMouseClick(Vector3 clickPosition)
