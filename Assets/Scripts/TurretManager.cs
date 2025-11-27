@@ -94,7 +94,7 @@ public class TurretManager : MonoBehaviour
         {
             if (turret == null || turret.physical == null) continue;
             float dist = Vector3.Distance(pos, turret.physical.transform.position);
-            if (dist < 0.5f) // turretlar arasi minimum mesafe
+            if (dist < 1f) // turretlar arasi minimum mesafe
                 return true;
         }
 
