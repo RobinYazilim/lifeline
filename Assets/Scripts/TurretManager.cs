@@ -60,7 +60,7 @@ public class TurretManager : MonoBehaviour
 {
     public static TurretManager inst;
 
-    private List<Turret> turrets;
+    public List<Turret> turrets;
 
     public int maxTurretCount = 15;
     private List<Turret> turretsToRemove;

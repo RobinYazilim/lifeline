@@ -7,6 +7,8 @@ public class MouseHandler : MonoBehaviour
 {
 
     public InputAction clickAction;
+    public InputAction rightClickAction;
+    public Turret hoveredTurret;
     public TurretType selectedTurretType = TurretType.Basic;
     // private int turretIndex = 0;
     private GameObject ghostPreview;
@@ -27,22 +29,45 @@ public class MouseHandler : MonoBehaviour
     {
         clickAction.Enable();
         clickAction.performed += OnClickPerformed;
+        rightClickAction.Enable();
+        rightClickAction.performed += OnRightClickPerformed;
     }
 
     private void OnDisable()
     {
         clickAction.performed -= OnClickPerformed;
         clickAction.Disable();
+        rightClickAction.performed -= OnRightClickPerformed;
+        rightClickAction.Disable();
     }
 
     private void Update()
     {
+
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
         mouseWorldPos.z = 0f;
 
-        onUi = EventSystem.current.IsPointerOverGameObject(-1);
+        foreach (Turret turret in TurretManager.inst.turrets)
+        {
+            Collider2D c2d = turret.physical.GetComponent<Collider2D>();
+            if (c2d == null)
+                continue;
+            bool amIOnBro = c2d.OverlapPoint(mouseWorldPos);
+            if (amIOnBro)
+            {
+                // yes you are on this diddy blud enemy papi
+                hoveredTurret = turret;
+                break;
+            }
+            else
+            {
+                hoveredTurret = null;
+            }
+        }
+        
 
+        onUi = EventSystem.current.IsPointerOverGameObject(-1);
 
         if (ghostPreview != null && turretbought)
         {
@@ -115,6 +140,16 @@ public class MouseHandler : MonoBehaviour
 
         OnMouseClick(mouseWorldPos);
 
+    }
+    private void OnRightClickPerformed(InputAction.CallbackContext context)
+    {
+        if (onUi)
+            return;
+
+        if (hoveredTurret == null)
+            return;
+        
+        TurretManager.inst.deleteTurret(hoveredTurret);
     }
 
     private void OnMouseClick(Vector3 clickPosition)
