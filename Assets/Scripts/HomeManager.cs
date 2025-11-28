@@ -25,6 +25,8 @@ public class Home : ITarget
         this.physical = physical;
         this.attackCooldown = attackCooldown;
         HomeManager.inst.mainHomeHealth = this.health;
+        HomeManager.inst.mainMaxHomeHealth = this.health;
+        ShopManager.inst.HomeHealth(this.health);
     }
 
     public bool takeDamage(Enemy damager, float dmgTaken)
@@ -38,6 +40,7 @@ public class Home : ITarget
         this.health -= dmgTaken;
         ShopManager.inst.HomeHealth(this.health);
         HomeManager.inst.mainHomeHealth = this.health;
+        
         if (this.health <= 0)
         {
             Debug.Log("im fr dead");
@@ -53,6 +56,7 @@ public class HomeManager : MonoBehaviour
 {
     public static HomeManager inst;
     public float mainHomeHealth = 100f;
+    public float mainMaxHomeHealth = 100f;
     public Home home;
     void Awake()
     {
@@ -60,6 +64,10 @@ public class HomeManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    public void homeDead()
+    {
+        Debug.Log("GGEZ ur dead");
+    }
     public void spawnHome(Vector3 homePosition, float health, float damage, float attackCooldown, GameObject physical)
     {
         if (home != null)

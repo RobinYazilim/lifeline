@@ -34,6 +34,7 @@ public class Enemy : ITarget
     public int currentIndex = 1;
     public int stunned = 0; // 0dan farkliysa stun var + - yapiyoz cunku oyle 6 yillik gamedev experiencim var trust me bro
     public int debuffed = 0; // ayni sey
+    public Action onHit;
     public int buffed = 0;
 
     public EnemyState state = EnemyState.Walking;
@@ -56,11 +57,13 @@ public class Enemy : ITarget
         this.health -= dmgTaken;
         if (this.health <= 0)
         {
+            this.dead = true;
             // on god on my mama on everything i wont ever do death code in the damage code again
             ShopManager.inst.money += this.money * WaveManager.inst.currentWave;
 
             this.health = 0;
-            EnemyManager.inst.enemiesToRemove.Add(this);
+            if (!EnemyManager.inst.enemiesToRemove.Contains(this))
+                EnemyManager.inst.enemiesToRemove.Add(this);
             return true;
         }
         if (physical != null)
@@ -92,6 +95,19 @@ public class EnemyManager : MonoBehaviour
     public void SetPath(Transform[] path)
     {
         this.path = path;
+    }
+
+    private void setOnHit(Enemy enemy)
+    {
+        switch (enemy.type)
+        {
+            default:
+                enemy.onHit = () =>
+                {
+                    HomeManager.inst.home.takeDamage(enemy, enemy.damage);
+                };
+                break;
+        }
     }
 
     public void spawnEnemy(float speed, float health, float damage, float attackCooldown, EnemyType type, GameObject physical)
@@ -155,23 +171,32 @@ public class EnemyManager : MonoBehaviour
         GameObject newPhysical = Instantiate(physical, transform);
         newPhysical.transform.position = new Vector3(1000f, 1000f, 1000f);
         Enemy newEnemy = new Enemy(speed, enemies.Count, health, damage, attackCooldown, type, newPhysical);
-
+        setOnHit(newEnemy);
         enemies.Add(newEnemy);
     }
     public void deleteEnemy(Enemy enemy)
     {
+        if (enemy == null) return;
         Debug.Log("Deleting enemy ID: " + enemy.id);
-        Destroy(enemy.physical);
         enemy.dead = true;
-        enemies.Remove(enemy);
+        if (enemies.Contains(enemy))
+            enemies.Remove(enemy);
         ShopManager.inst.removeEnemyCount();
+
+        if (enemy.physical != null)
+        {
+            // asiri gereksiz ve basit bisey ama olsun 1 saniye sonra silicek
+            SpriteRenderer sr = enemy.physical.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.enabled = false;
+            Destroy(enemy.physical, 1f);
+            enemy.physical = null;
+        }
     }
     public System.Collections.IEnumerator DamageFlash(GameObject physical)
     {
         SpriteRenderer sr = physical.GetComponent<SpriteRenderer>();
         if (sr == null) yield break;
-        ParticleSystem ps = physical.GetComponent<ParticleSystem>();
-        ps.Play();
+        EffectManager.inst.spawnHitEffect(physical);
         sr.material = flashMat;
         yield return new WaitForSeconds(0.1f);
         if (sr == null) yield break;
@@ -187,7 +212,6 @@ public class EnemyManager : MonoBehaviour
 
         foreach (var enemy in enemies)
         {
-            if (enemy.dead) continue;
             if (enemy.stunned > 0)
             {
                 continue;
@@ -208,14 +232,32 @@ public class EnemyManager : MonoBehaviour
             }
             else if (enemy.state == EnemyState.Attacking)
             {
+                if (enemy.type == EnemyType.Kamikaze)
+                {
+                    bool dead = HomeManager.inst.home.takeDamage(enemy, enemy.damage);
+                    EffectManager.inst.spawnBombEffect(enemy.physical);
+                    enemiesToRemove.Add(enemy);
+                    if (dead)
+                        HomeManager.inst.homeDead();
+                    continue;
+                }
                 enemy.t += dt;
                 if (enemy.t >= enemy.attackCooldown)
                 {
                     enemy.t -= enemy.attackCooldown;
-                    bool dead = HomeManager.inst.home.takeDamage(enemy, enemy.damage);
+
+                    ProjectileManager.inst.spawnProjectile(
+                        enemy.attackCooldown / 2f,
+                        enemy.physical.transform.position,
+                        HomeManager.inst.home,
+                        GameManager.inst.projectilePrefabs[0],
+                        () => enemy.onHit?.Invoke()
+                    );
+                    bool dead = HomeManager.inst.home.health <= enemy.damage;
                     if (dead)
                     {
-                        Debug.Log("GGEZ ur dead");
+                        HomeManager.inst.homeDead();
+                        continue;
                     }
                 }
             }

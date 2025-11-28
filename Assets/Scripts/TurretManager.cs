@@ -30,14 +30,14 @@ public class Turret
     public float t = 0;
     public Enemy target;
     public Projectile projectile;
-    public Action<Enemy> onHit; // bunu kullanarak ozel seyleri yapariz MUHTEMELEN
+    public Action<Enemy, float> onHit; // bunu kullanarak ozel seyleri yapariz MUHTEMELEN
     // stun fln seylerini iste // yaptim bile :p
     public int buffed = 0;
     public int debuffed = 0;
 
 
 
-    public Turret(int id, float damage, float attackCooldown, float reach, TurretType type, GameObject physical, Action<Enemy> onHit = null)
+    public Turret(int id, float damage, float attackCooldown, float reach, TurretType type, GameObject physical, Action<Enemy, float> onHit = null)
     {
         this.id = id;
         this.damage = damage;
@@ -131,46 +131,52 @@ public class TurretManager : MonoBehaviour
         switch (turret.type)
         {
             case TurretType.Basic:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
-                    target.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
+                    target.takeDamage(damage);
                 };
                 break;
             case TurretType.AOE:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
                     Vector3 targetPos = target.physical.transform.position;
+                    EffectManager.inst.spawnBombEffect(target.physical);
                     foreach (var enemy in EnemyManager.inst.enemies)
                     {
                         float dist = Vector3.Distance(targetPos, enemy.physical.transform.position);
                         if (dist <= 2f) // aoe ne kadar olsun
                         {
-                            enemy.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
+                            enemy.takeDamage(damage);
                         }
                     }
                     // target.takeDamage(turret.damage); galiba ustteki kod bunu yapiyo zaten ama GALIBA
                 };
                 break;
             case TurretType.Stun:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
+                    EffectManager.inst.spawnStunEffect(target.physical);
                     StartCoroutine(RemoveStun(target, 0.2f));
                     target.stunned += 1;
                 };
                 break;
             case TurretType.AllInOne:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
                     Vector3 targetPos = target.physical.transform.position;
                     foreach (var enemy in EnemyManager.inst.enemies)
                     {
+                        if (enemy != target && enemy.dead) continue;
                         float dist = Vector3.Distance(targetPos, enemy.physical.transform.position);
                         if (dist <= 2f) // aoe ne kadar olsun
                         {
-                            enemy.takeDamage(turret.damage * getTurretDamageMultiplier(turret));
+                            enemy.takeDamage(damage);
                         }
                     }
                     
+                    EffectManager.inst.spawnStunEffect(target.physical);
+                    EffectManager.inst.spawnBombEffect(target.physical);
+                    EffectManager.inst.spawnDebuffEffect(target.physical);
                     StartCoroutine(RemoveStun(target, 0.1f));
                     target.stunned += 1;
 
@@ -179,7 +185,7 @@ public class TurretManager : MonoBehaviour
                 };
                 break;
             case TurretType.Reverse:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
                     // custom logic lazim buna yeah
                     // simdilik kendini yok edicek
@@ -187,22 +193,23 @@ public class TurretManager : MonoBehaviour
                 };
                 break;
             case TurretType.Buff:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
                     //bunu da sonra yapicaz
                 };
                 break;
             case TurretType.Debuff:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
+                    EffectManager.inst.spawnDebuffEffect(target.physical);
                     StartCoroutine(RemoveDebuff(target, 0.5f));
                     target.debuffed += 1;
                 };
                 break;
             default:
-                turret.onHit = target =>
+                turret.onHit = (target, damage) =>
                 {
-                    target.takeDamage(turret.damage);
+                    target.takeDamage(damage);
                 };
                 break;
         }
@@ -333,15 +340,16 @@ public class TurretManager : MonoBehaviour
                 if (turret.t >= turret.attackCooldown)
                 {
                     Enemy snapshotTarget = turret.target;
+                    float predictedDamage = turret.damage * getTurretDamageMultiplier(turret);
                     ProjectileManager.inst.spawnProjectile(
                         turret.attackCooldown / 2f,
                         turret.physical.transform.position,
                         turret.target,
                         GameManager.inst.projectilePrefabs[0],
-                        () => turret.onHit?.Invoke(snapshotTarget)
+                        () => turret.onHit?.Invoke(snapshotTarget, predictedDamage)
                     );
                     turret.t -= turret.attackCooldown;
-                    bool dead = turret.target.health <= turret.damage;
+                    bool dead = turret.target.health <= predictedDamage;
                     if (dead)
                     {
                         turret.state = TurretState.Idle;

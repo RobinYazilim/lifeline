@@ -505,8 +505,8 @@ Canvas:
   m_GameObject: {fileID: 129370939}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2215,8 +2215,8 @@ Canvas:
   m_GameObject: {fileID: 453788164}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -3180,7 +3180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   shopVisible: 0
-  money: 10
+  money: 1000
 --- !u!114 &652447414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15824,6 +15824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   mainHomeHealth: 100
+  mainMaxHomeHealth: 100
 --- !u!4 &1775328155
 Transform:
   m_ObjectHideFlags: 0
@@ -16643,6 +16644,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835579753}
   m_CullTransparentMesh: 1
+--- !u!1 &1854327013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1854327015}
+  - component: {fileID: 1854327014}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1854327014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854327013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4547a45c2d62fc4c9a5d2053b7316cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitEffectPrefab: {fileID: 5397338493917683496, guid: 049fd44baa1d46245b46ff74d9738085, type: 3}
+  stunEffectPrefab: {fileID: 5379343099613436804, guid: cc286093315c6ea45b30d3a953f931d4, type: 3}
+  debuffEffectPrefab: {fileID: 338305658304926658, guid: e3f7e447ac515ca4bac312105699cf62, type: 3}
+  bombEffectPrefab: {fileID: 2160523056024194521, guid: c85b71c0fb7b3c24a9732d09ac51455d, type: 3}
+--- !u!4 &1854327015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854327013}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.12789, y: 0.04432, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1863993566
 GameObject:
   m_ObjectHideFlags: 0
@@ -16655,7 +16704,7 @@ GameObject:
   - component: {fileID: 1863993569}
   - component: {fileID: 1863993568}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16677,9 +16726,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.000091552734, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1863993568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17415,3 +17464,4 @@ SceneRoots:
   - {fileID: 453788168}
   - {fileID: 129370943}
   - {fileID: 610915036}
+  - {fileID: 1854327015}
