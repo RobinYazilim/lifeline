@@ -1877,31 +1877,6 @@ MonoBehaviour:
   waves:
   - spawns:
     - type: 0
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-    - type: 1
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-    - type: 2
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-    - type: 3
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-    - type: 4
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-    - type: 5
-      count: 1
-      delay: 0.5
-      waitAfter: 0
-  - spawns:
-    - type: 0
       count: 3
       delay: 1.5
       waitAfter: 0
@@ -2126,6 +2101,31 @@ MonoBehaviour:
       waitAfter: 0
     - type: 2
       count: 10
+      delay: 0.5
+      waitAfter: 0
+    - type: 5
+      count: 1
+      delay: 0.5
+      waitAfter: 0
+  - spawns:
+    - type: 0
+      count: 1
+      delay: 0.5
+      waitAfter: 0
+    - type: 1
+      count: 1
+      delay: 0.5
+      waitAfter: 0
+    - type: 2
+      count: 1
+      delay: 0.5
+      waitAfter: 0
+    - type: 3
+      count: 1
+      delay: 0.5
+      waitAfter: 0
+    - type: 4
+      count: 1
       delay: 0.5
       waitAfter: 0
     - type: 5
