@@ -3180,7 +3180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   shopVisible: 0
-  money: 2147483647
+  money: 10
 --- !u!114 &652447414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8802,7 +8802,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 2.309227, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -14305,7 +14305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 273.2102, y: 0}
+  m_AnchoredPosition: {x: 273.21014, y: 0}
   m_SizeDelta: {x: 526.4197, y: 1038.0182}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381703393
@@ -15086,8 +15086,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -266.12, y: -66.99463}
-  m_SizeDelta: {x: 170.04, y: 89.99}
+  m_AnchoredPosition: {x: -277.18, y: -66.99463}
+  m_SizeDelta: {x: 192.15, y: 89.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1631053600
 MonoBehaviour:
@@ -15163,7 +15163,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -560.74, y: -66.99463}
+  m_AnchoredPosition: {x: -778, y: -66.99463}
   m_SizeDelta: {x: 385.45, y: 89.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1649087112

@@ -18,6 +18,7 @@ public class ShopManager : MonoBehaviour
     private bool canSkip = false;
     public int money = 10;
     private int enemyCount = 0;
+    
     private void Awake()
     {
         if (inst == null) inst = this;
@@ -71,6 +72,9 @@ public class ShopManager : MonoBehaviour
         rectTransform = transform.Find("Frame").GetComponent<RectTransform>();
         shopBtnRectTransform = transform.Find("Open").GetComponent<RectTransform>();
         moneyRectTransform = transform.Find("Money").GetComponent<RectTransform>();
+        transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>().text = $"Wave {1} started!";
+        HomeHealth(100f);
+
         transform.Find("Open").GetComponent<Button>().onClick.AddListener(() =>
         {
             if (MouseHandler.inst.turretbought)
@@ -114,6 +118,7 @@ public class ShopManager : MonoBehaviour
                 textComp.text = $"{name}\n${editablePrice}";
             });
         }
+
     }
 
     public void showShop()
@@ -137,6 +142,16 @@ public class ShopManager : MonoBehaviour
         endGoal = new Vector2(273.2102f, 56.37762f);
         shopBtnEndGoal = new Vector2(-113.9971f, 66.99463f);
         moneyEndGoal = new Vector2(-113.9971f, -66.99463f);
+    }
+
+    public void WaveCount(int wave)
+    {
+        transform.Find("WaveNumber/InnerText").GetComponent<TextMeshProUGUI>().text = $"Wave {wave} started!";
+    }
+
+    public void HomeHealth(float health)
+    {
+        transform.Find("HealthBar/InnerText").GetComponent<TextMeshProUGUI>().text = $"Home Health: {health}";
     }
 
     public void Update()

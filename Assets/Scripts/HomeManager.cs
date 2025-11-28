@@ -36,6 +36,7 @@ public class Home : ITarget
             this.state = HomeState.Attacking;
         }
         this.health -= dmgTaken;
+        ShopManager.inst.HomeHealth(this.health);
         HomeManager.inst.mainHomeHealth = this.health;
         if (this.health <= 0)
         {

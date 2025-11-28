@@ -38,6 +38,7 @@ public class WaveManager : MonoBehaviour
         {
             spawningFinished = false;
             currentWave += 1;
+            ShopManager.inst.WaveCount(currentWave);
 
             
 
@@ -73,6 +74,7 @@ public class WaveManager : MonoBehaviour
 
     public void startWaves()
     {
+
         if (waveCoroutine == null)
             waveCoroutine = StartCoroutine(waveLoop());
     }
