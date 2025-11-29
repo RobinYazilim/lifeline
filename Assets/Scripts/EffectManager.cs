@@ -7,6 +7,7 @@ public class EffectManager : MonoBehaviour
     public GameObject stunEffectPrefab;
     public GameObject debuffEffectPrefab;
     public GameObject bombEffectPrefab;
+    public GameObject buffEffectPrefab;
     void Awake()
     {
         if (inst == null) inst = this;
@@ -17,6 +18,27 @@ public class EffectManager : MonoBehaviour
     public void spawnStunEffect(GameObject parent) => spawnAndDestroy(stunEffectPrefab, parent);
     public void spawnDebuffEffect(GameObject parent) => spawnAndDestroy(debuffEffectPrefab, parent);
     public void spawnBombEffect(GameObject parent) => spawnAndDestroy(bombEffectPrefab, parent);
+    public void spawnBuffEffect(GameObject parent)
+    {
+        bool hasEffect = parent.transform.Find(buffEffectPrefab.name + "(Clone)") != null;
+        if (hasEffect) return;
+        GameObject effect = Instantiate(buffEffectPrefab, parent.transform);
+
+        ParticleSystem ps = effect.GetComponent<ParticleSystem>();
+
+        if (ps != null)
+        {
+            ps.Play();
+        }
+    }
+    public void removeBuffEffect(GameObject parent)
+    {
+        Transform effectTransform = parent.transform.Find(buffEffectPrefab.name + "(Clone)");
+        if (effectTransform != null)
+        {
+            Destroy(effectTransform.gameObject);
+        }
+    }
 
     private void spawnAndDestroy(GameObject prefab, GameObject parent)
     {
