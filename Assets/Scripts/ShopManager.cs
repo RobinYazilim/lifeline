@@ -96,6 +96,24 @@ public class ShopManager : MonoBehaviour
             hideShop();
         });
         
+        transform.Find("Pause").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Time.timeScale = 0f;
+            transform.Find("PauseFrame").gameObject.SetActive(true);
+        });
+
+        transform.Find("PauseFrame/Resume").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Time.timeScale = 1f;
+            transform.Find("PauseFrame").gameObject.SetActive(false);
+        });
+
+        transform.Find("PauseFrame/MainMenu").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Time.timeScale = 1f;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        });
+        
 
         foreach (var (name, type, price) in turrets)
         {

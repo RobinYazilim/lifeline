@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-   public GameObject MainMenuCanvas;
+    public GameObject MainMenuCanvas;
     public GameObject SettingsCanvas;
     public void OnPlayButtonClicked()
     {
-    SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Game");
     }
 
     public void OnQuitButtonClicked()
@@ -22,9 +22,9 @@ public class MainMenuManager : MonoBehaviour
         MainMenuCanvas.SetActive(false);
     }
 
-     public void OnBackButtonClicked()
-     {
+    public void OnBackButtonClicked()
+    {
         SettingsCanvas.SetActive(false);
         MainMenuCanvas.SetActive(true);
-     }
+    }
 }
