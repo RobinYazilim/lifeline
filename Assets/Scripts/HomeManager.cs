@@ -1,4 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public enum HomeState
 {
@@ -15,6 +20,7 @@ public class Home : ITarget
     public GameObject physical;
     public float t = 0f;
     public Enemy target;
+    public bool dead = false;
 
     public HomeState state = HomeState.Idle;
 
@@ -58,15 +64,89 @@ public class HomeManager : MonoBehaviour
     public float mainHomeHealth = 100f;
     public float mainMaxHomeHealth = 100f;
     public Home home;
+    private LensDistortion lens;
+    public Volume volume;
     void Awake()
     {
         if (inst == null) inst = this;
         else Destroy(gameObject);
     }
 
+    void Start()
+    {
+        volume.profile.TryGet<LensDistortion>(out lens);
+    }
+
+    private IEnumerator lerpTimeToZero()
+    {
+        float duration = 3f;
+        float start = Time.timeScale;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.unscaledDeltaTime;
+
+            float n = Mathf.Clamp01(t / duration);
+
+            float eased = 1f - Mathf.Pow(1f - n, 3);
+            Time.timeScale = Mathf.Lerp(start, 0f, eased);
+
+            yield return null;
+        }
+
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.5f);
+        Debug.Log("waa");
+        StartCoroutine(explodeAll());
+    }
+
+    public IEnumerator explodeAll()
+    {
+        // foreach (Projectile p in ProjectileManager.inst.projectiles)
+        // {
+        //     ProjectileManager.inst.projectilesToRemove.Add(p);
+        // }
+
+        List<Vector3> targets = new List<Vector3>();
+        
+        foreach (Turret t in TurretManager.inst.turrets)
+            targets.Add(t.physical.transform.position);
+
+        foreach (Enemy e in EnemyManager.inst.enemies)
+            targets.Add(e.physical.transform.position);
+
+        Debug.Log("starting explosion");
+        for (int i = 0; i < targets.Count; i++)
+        {
+            int rand = Random.Range(i, targets.Count);
+            Vector3 temp = targets[i];
+            targets[i] = targets[rand];
+            targets[rand] = temp;
+        }
+        Debug.Log("Exploding");
+
+        foreach (Vector3 pos in targets)
+        {
+            EffectManager.inst.spawnUnscaledExplosionEffect(pos);
+            yield return new WaitForSecondsRealtime(0.2f);
+        }
+
+        TurretManager.inst.turretsToRemove.AddRange(TurretManager.inst.turrets);
+        EnemyManager.inst.enemiesToRemove.AddRange(EnemyManager.inst.enemies);
+        
+    }
+
     public void homeDead()
     {
+        if (home == null) return;
+        if (home.dead) return;
+
+        home.dead = true;
         Debug.Log("GGEZ ur dead");
+
+        // MAKE EVERYTHING EXPLODE!!!
+        StartCoroutine(lerpTimeToZero());
     }
     public void spawnHome(Vector3 homePosition, float health, float damage, float attackCooldown, GameObject physical)
     {

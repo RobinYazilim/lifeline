@@ -23,8 +23,8 @@ public class ProjectileManager : MonoBehaviour
 {
     public static ProjectileManager inst;
    
-    private List<Projectile> projectiles;
-    private List<Projectile> projectilesToRemove;
+    public List<Projectile> projectiles;
+    public List<Projectile> projectilesToRemove;
 
     void Awake()
     {

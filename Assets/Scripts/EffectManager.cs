@@ -18,6 +18,23 @@ public class EffectManager : MonoBehaviour
     public void spawnStunEffect(GameObject parent) => spawnAndDestroy(stunEffectPrefab, parent);
     public void spawnDebuffEffect(GameObject parent) => spawnAndDestroy(debuffEffectPrefab, parent);
     public void spawnBombEffect(GameObject parent) => spawnAndDestroy(bombEffectPrefab, parent);
+    public void spawnUnscaledExplosionEffect(Vector3 position)
+    {
+        GameObject effect = Instantiate(bombEffectPrefab, gameObject.transform);
+        effect.transform.position = position;
+
+        ParticleSystem ps = effect.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.useUnscaledTime = true;
+        
+        if (ps != null)
+        {
+            ps.Play();
+            Destroy(effect, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+        else
+            Destroy(effect, 3f);
+    }
     public void spawnBuffEffect(GameObject parent)
     {
         bool hasEffect = parent.transform.Find(buffEffectPrefab.name + "(Clone)") != null;

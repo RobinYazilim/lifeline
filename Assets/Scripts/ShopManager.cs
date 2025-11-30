@@ -169,6 +169,7 @@ public class ShopManager : MonoBehaviour
 
     public void HomeHealth(float health)
     {
+        if (health < 0f) health = 0f;
         transform.Find("HealthBar/InnerText").GetComponent<TextMeshProUGUI>().text = $"Home Health: {health}";
         transform.Find("HealthBar/Fill").GetComponent<Transform>().localScale = new Vector3(health / HomeManager.inst.mainMaxHomeHealth, 1f, 1f);
     }
