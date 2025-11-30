@@ -64,7 +64,6 @@ public class HomeManager : MonoBehaviour
     public float mainHomeHealth = 100f;
     public float mainMaxHomeHealth = 100f;
     public Home home;
-    private LensDistortion lens;
     public Volume volume;
     void Awake()
     {
@@ -74,7 +73,6 @@ public class HomeManager : MonoBehaviour
 
     void Start()
     {
-        volume.profile.TryGet<LensDistortion>(out lens);
     }
 
     private IEnumerator lerpTimeToZero()
