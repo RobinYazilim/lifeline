@@ -106,32 +106,43 @@ public class HomeManager : MonoBehaviour
         //     ProjectileManager.inst.projectilesToRemove.Add(p);
         // }
 
-        List<Vector3> targets = new List<Vector3>();
+        List<object> targets = new List<object>();
         
         foreach (Turret t in TurretManager.inst.turrets)
-            targets.Add(t.physical.transform.position);
+            targets.Add(t);
 
         foreach (Enemy e in EnemyManager.inst.enemies)
-            targets.Add(e.physical.transform.position);
+            targets.Add(e);
 
-        Debug.Log("starting explosion");
         for (int i = 0; i < targets.Count; i++)
         {
             int rand = Random.Range(i, targets.Count);
-            Vector3 temp = targets[i];
+            var temp = targets[i];
             targets[i] = targets[rand];
             targets[rand] = temp;
         }
-        Debug.Log("Exploding");
 
-        foreach (Vector3 pos in targets)
+        foreach (var obj in targets)
         {
-            EffectManager.inst.spawnUnscaledExplosionEffect(pos);
-            yield return new WaitForSecondsRealtime(0.2f);
-        }
+            Vector3 pos;
+            if (obj is Turret)
+            {
+                Turret t = (Turret)obj;
+                pos = t.physical.transform.position;
+                TurretManager.inst.turretsToRemove.Add(t);
+            }
+            else if (obj is Enemy)
+            {
+                Enemy e = (Enemy)obj;
+                pos = e.physical.transform.position;
+                EnemyManager.inst.enemiesToRemove.Add(e);
+            }
+            else continue;
 
-        TurretManager.inst.turretsToRemove.AddRange(TurretManager.inst.turrets);
-        EnemyManager.inst.enemiesToRemove.AddRange(EnemyManager.inst.enemies);
+            EffectManager.inst.spawnUnscaledExplosionEffect(pos);
+
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
         
     }
 

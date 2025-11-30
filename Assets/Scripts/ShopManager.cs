@@ -46,6 +46,79 @@ public class ShopManager : MonoBehaviour
         transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>().text = $"Enemies left: {enemyCount}";
     }
 
+    public void setStatsToEnemy(Enemy enemy)
+    {
+        transform.Find("HoverStats").gameObject.SetActive(true);
+        transform.Find("HoverStats/Title").GetComponent<TextMeshProUGUI>().text = enemy.type.ToString();
+        string desc = "";
+        switch (enemy.type)
+        {
+            case EnemyType.Basic:
+                desc = "A basic enemy with balanced stats.";
+                break;
+            case EnemyType.Fast:
+                desc = "A fast enemy with low health and damage.";
+                break;
+            case EnemyType.Tank:
+                desc = "A tanky enemy with high health but low speed.";
+                break;
+            case EnemyType.Kamikaze:
+                desc = "An enemy that will detonate upon reaching the base.";
+                break;
+            case EnemyType.Boss:
+                desc = "A powerful boss enemy with high health and damage.";
+                break;
+            case EnemyType.Debuff:
+                desc = "Attacking this one might not be the wisest decision.";
+                break;
+            default:
+                desc = "An unknown enemy.";
+                break;
+        }
+
+        transform.Find("HoverStats/Desc").GetComponent<TextMeshProUGUI>().text = $"Health: {enemy.health}/{enemy.maxHealth}\nDamage: {enemy.damage}\nSpeed: {enemy.speed}\n{desc}";
+    }
+
+    public void setStatsToTurret(Turret turret)
+    {
+        transform.Find("HoverStats").gameObject.SetActive(true);
+        transform.Find("HoverStats/Title").GetComponent<TextMeshProUGUI>().text = turret.type.ToString();
+        string desc = "";
+        switch (turret.type)
+        {
+            case TurretType.Basic:
+                desc = "A basic turret with balanced stats.";
+                break;
+            case TurretType.AOE:
+                desc = "A turret that shoots exploding bullets that deal area damage.";
+                break;
+            case TurretType.Stun:
+                desc = "An electric infused turret that paralyses enemies it hits.";
+                break;
+            case TurretType.AllInOne:
+                desc = "An enemy that does it all, albeit at a mediocre level.";
+                break;
+            case TurretType.Buff:
+                desc = "A turret that increases the damage and speed of nearby turrets by supplying them orange juice.";
+                break;
+            case TurretType.Debuff:
+                desc = "A turret that slows down enemies.";
+                break;
+            default:
+                desc = "An unknown enemy.";
+                break;
+        }
+
+        transform.Find("HoverStats/Desc").GetComponent<TextMeshProUGUI>().text = $"Damage: {turret.damage}\nAttack Cooldown: {turret.attackCooldown}\nBuffed: {turret.buffed > 0}\nDeuffed: {turret.debuffed > 0}\n{desc}";
+    }
+
+    public void hideStats()
+    {
+        transform.Find("HoverStats/Title").GetComponent<TextMeshProUGUI>().text = "";
+        transform.Find("HoverStats/Desc").GetComponent<TextMeshProUGUI>().text = "";
+        transform.Find("HoverStats").gameObject.SetActive(false);
+    }
+
     public IEnumerator timerCoroutine(float duration)
     {
         float timeLeft = duration;

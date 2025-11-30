@@ -9,6 +9,7 @@ public class MouseHandler : MonoBehaviour
     public InputAction clickAction;
     public InputAction rightClickAction;
     public Turret hoveredTurret;
+    public Enemy hoveredEnemy;
     public TurretType selectedTurretType = TurretType.Basic;
     // private int turretIndex = 0;
     private GameObject ghostPreview;
@@ -65,6 +66,31 @@ public class MouseHandler : MonoBehaviour
                 hoveredTurret = null;
             }
         }
+
+        foreach (Enemy enemy in EnemyManager.inst.enemies)
+        {
+            Collider2D c2d = enemy.physical.GetComponent<Collider2D>();
+            if (c2d == null)
+                continue;
+            bool amIOnBro = c2d.OverlapPoint(mouseWorldPos);
+            if (amIOnBro)
+            {
+                hoveredEnemy = enemy;
+                break;
+            }
+            else
+            {
+                hoveredEnemy = null;
+            }
+        }
+
+        if (hoveredEnemy != null)
+            ShopManager.inst.setStatsToEnemy(hoveredEnemy);
+        else if (hoveredTurret != null)
+            ShopManager.inst.setStatsToTurret(hoveredTurret);
+        else
+            ShopManager.inst.hideStats();
+
         
 
         onUi = EventSystem.current.IsPointerOverGameObject(-1);

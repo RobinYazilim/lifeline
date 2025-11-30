@@ -25,6 +25,7 @@ public class Enemy : ITarget
     public float speed = 1f;
     public int id;
     public float health = 10f;
+    public float maxHealth = 10f;
     public int money = 10;
     public float damage = 10f;
     public float attackCooldown = 1f;
@@ -45,6 +46,7 @@ public class Enemy : ITarget
         this.speed = speed;
         this.id = id;
         this.health = health * WaveManager.inst.currentWave;
+        this.maxHealth = this.health;
         this.money = (int) health/2; // money = health for now
         this.damage = damage * WaveManager.inst.currentWave;
         this.physical = physical;
@@ -212,12 +214,16 @@ public class EnemyManager : MonoBehaviour
 
         foreach (var enemy in enemies)
         {
+            
+
             if (enemy.stunned > 0)
             {
                 continue;
             }
+            
             if (enemy.state == EnemyState.Walking)
             {
+                
                 enemy.t += dt * (enemy.speed * (enemy.debuffed != 0 ? 0.5f : 1f)) / Vector3.Distance(path[enemy.currentIndex - 1].position, path[enemy.currentIndex].position);
                 enemy.physical.transform.position = Vector3.Lerp(path[enemy.currentIndex - 1].position, path[enemy.currentIndex].position, enemy.t);
                 if (enemy.t >= 1f)
@@ -228,6 +234,11 @@ public class EnemyManager : MonoBehaviour
                     {
                         enemy.state = EnemyState.Attacking;
                     }
+                }
+                SpriteRenderer sr = enemy.physical.transform.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.sortingOrder = Mathf.RoundToInt(-enemy.physical.transform.position.y * 10);
                 }
             }
             else if (enemy.state == EnemyState.Attacking)

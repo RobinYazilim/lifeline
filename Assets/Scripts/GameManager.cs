@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         
         //TurretManager.inst.spawnTurret(new Vector3(-0.7f, 1.23f, 0f), 2f, 0.3f, 2f, TurretType.Basic, turretPrefabs[0]);
         //TurretManager.inst.spawnTurret(new Vector3(-0.7f, 1.23f, 0f), TurretType.Basic, turretPrefabs[0]);
-        HomeManager.inst.spawnHome(new Vector3(8f, 2.8f, 0f), 10f, 5f, 0.5f, homePrefabs[0]);
+        HomeManager.inst.spawnHome(new Vector3(8f, 2.8f, 0f), 500f, 5f, 0.5f, homePrefabs[0]);
         
         WaveManager.inst.startWaves();
         //yield return new WaitForSeconds(1f);

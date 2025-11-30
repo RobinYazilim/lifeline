@@ -53,10 +53,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blur_Offset: 0.001548
+    - _Blur_Offset: 0.001648
     - _EnableExternalAlpha: 0
     - _Scan_Lines: 250
-    - _Scan_Lines_Speed: 0.001
+    - _Scan_Lines_Speed: 0.002
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

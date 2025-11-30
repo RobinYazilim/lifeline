@@ -106,12 +106,12 @@ TextureImporter:
       name: tanktv animation_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 6
-        width: 119
-        height: 122
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -128,12 +128,12 @@ TextureImporter:
       name: tanktv animation_1
       rect:
         serializedVersion: 2
-        x: 136
+        x: 128
         y: 0
-        width: 119
-        height: 122
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f7fae82d201030d41a036678f6ada732
     internalID: 0
     vertices: []
     indices: 
