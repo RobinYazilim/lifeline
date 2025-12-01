@@ -55,7 +55,7 @@ Material:
     m_Floats:
     - _Blur_Offset: 0.001648
     - _EnableExternalAlpha: 0
-    - _Scan_Lines: 250
+    - _Scan_Lines: 350
     - _Scan_Lines_Speed: 0.002
     - _ZWrite: 0
     m_Colors:
