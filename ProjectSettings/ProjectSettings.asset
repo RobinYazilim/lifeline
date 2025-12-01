@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: Poyun
-  defaultCursor: {fileID: 2800000, guid: 6d0ae8b71e130498990557beab5f7b6a, type: 3}
+  defaultCursor: {fileID: 2800000, guid: d3a951ff88c694b2f83de07965171aaf, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
