@@ -3330,7 +3330,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Turrets:
 
-    0/15'
+    0/25'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 72cb64dfb1520db4390f3680714501b0, type: 2}
   m_sharedMaterial: {fileID: 4917203491454345496, guid: 72cb64dfb1520db4390f3680714501b0, type: 2}
