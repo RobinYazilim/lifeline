@@ -423,7 +423,7 @@ public class TurretManager : MonoBehaviour
     {
         foreach (var turret in turretsToRemove)
         {
-            turrets.Remove(turret);
+            deleteTurret(turret);
         }
         turretsToRemove.Clear();
     }

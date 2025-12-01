@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public enum HomeState
 {
@@ -141,7 +142,9 @@ public class HomeManager : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(0.1f);
         }
+        yield return new WaitForSecondsRealtime(1f);
         
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void homeDead()
