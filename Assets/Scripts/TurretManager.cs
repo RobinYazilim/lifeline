@@ -250,6 +250,7 @@ public class TurretManager : MonoBehaviour
         setOnHit(newTurret);
 
         turrets.Add(newTurret);
+        ShopManager.inst.updateTurretCount();
     }
     public (float, float, float) getTurretData(TurretType type)
     {
@@ -319,12 +320,14 @@ public class TurretManager : MonoBehaviour
         setOnHit(newTurret);
 
         turrets.Add(newTurret);
+        ShopManager.inst.updateTurretCount();
     }
 
     public void deleteTurret(Turret turret)
     {
         Destroy(turret.physical);
         turrets.Remove(turret);
+        ShopManager.inst.updateTurretCount();
     }
 
     void Update()

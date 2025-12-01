@@ -46,6 +46,21 @@ public class ShopManager : MonoBehaviour
         transform.Find("Counter/InnerText").GetComponent<TextMeshProUGUI>().text = $"Enemies left: {enemyCount}";
     }
 
+    public void setMusicVolume(float value)
+    {
+        AudioSource music = transform.Find("Music").GetComponent<AudioSource>();
+        if (music != null)
+        {
+            music.volume = value * 0.6f;
+        }
+    }
+
+    public void updateTurretCount()
+    {
+        int turretCount = TurretManager.inst.turrets.Count;
+        transform.Find("MaxTurrets/InnerText").GetComponent<TextMeshProUGUI>().text = $"Turrets:\n{turretCount}/{TurretManager.inst.maxTurretCount}";
+    }
+
     public void setStatsToEnemy(Enemy enemy)
     {
         transform.Find("HoverStats").gameObject.SetActive(true);

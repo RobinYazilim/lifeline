@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 
@@ -6,6 +7,15 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject MainMenuCanvas;
     public GameObject SettingsCanvas;
+    public AudioSource music;
+
+    public void onVolumeChange(float value)
+    {
+        if (music != null)
+        {
+            music.volume = value * 0.6f;
+        }
+    }
     public void OnPlayButtonClicked()
     {
         SceneManager.LoadScene("Game");
