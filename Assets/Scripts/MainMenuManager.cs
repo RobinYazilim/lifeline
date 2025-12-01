@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour
     }
     public void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Cutscene");
     }
 
     public void OnQuitButtonClicked()

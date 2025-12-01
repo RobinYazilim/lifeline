@@ -2899,7 +2899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   shopVisible: 0
-  money: 1000
+  money: 10
 --- !u!114 &652447414
 MonoBehaviour:
   m_ObjectHideFlags: 0
